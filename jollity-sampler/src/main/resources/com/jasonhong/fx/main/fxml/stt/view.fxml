@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jasonhong.fx.main.ocr.ImageToTextController"
+            id="rootPane">
+    <top>
+        <MenuBar>
+            <Menu text="打开">
+
+                <!--                    <items>-->
+                <!--                    <MenuItem text="退出" onAction="#handleExit"/>-->
+                <!--                </items>-->
+                <MenuItem fx:id="openDirectoryMenuItem" text="打开目录" onAction="#handleOpenDirectory"/>
+                <!--                        <MenuItem text="退出" onAction="#handleExit"/>-->
+                <Menu fx:id="recentMenu" text="最近打开" onAction="#handleOpenRecently"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <VBox>
+            <ListView fx:id="imageListView" />
+            <Button fx:id="startConversionButton" text="开始转换" onAction="#handleStartConversion" />
+            <Label fx:id="labelCount"/>
+        </VBox>
+    </center>
+    <bottom>
+        <TextArea fx:id="resultTextArea" editable="false" prefHeight="100.0" />
+    </bottom>
+<!--    <padding>-->
+<!--        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />-->
+<!--    </padding>-->
+</BorderPane>

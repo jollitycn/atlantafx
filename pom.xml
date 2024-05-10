@@ -48,6 +48,7 @@
     <modules>
         <module>base</module>
         <module>sampler</module>
+        <module>jollity-sampler</module>
         <module>styles</module>
     </modules>
 
@@ -62,7 +63,7 @@
         <openjfx.version>20</openjfx.version>
         <sass.version>1.54.4</sass.version>
 
-        <app.name>AtlantaFX</app.name>
+        <app.name>JOLLITY STUDIO</app.name>
         <!-- DO NOT use ${project.version} as jpackage will fail on
              Windows when using '-SNAPSHOT' suffix -->
         <app.version>2.0.1</app.version>

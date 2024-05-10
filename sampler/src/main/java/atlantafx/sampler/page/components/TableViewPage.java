@@ -20,6 +20,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -29,6 +31,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
@@ -636,7 +639,33 @@ public final class TableViewPage extends OutlinePage {
         var playground = new VBox(VGAP_10, description, header, table, footer);
         playground.setMinHeight(500);
 
+            var task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(10000);
+                    int steps = 100000;
+                    for (int i = 0; i < steps; i++) {
+                        Thread.sleep(10);
+                        for(var value:sortedData){
+                            value.setCount(RANDOM.nextInt(999));
+
+                        } Platform.runLater(()->{
+                            table.refresh();
+                            //table.requestLayout();
+                        });
+                    }
+                    return null;
+                }
+            };
+
+
+            new Thread(task).start();
+
         return playground;
+
+
+
+
     }
 
     @SuppressWarnings("unchecked")

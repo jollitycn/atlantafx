@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jasonhong.fx.main.fxml.tts.Controller"
+            fx:id="rootPane">
+    <top>
+        <MenuBar>
+            <Menu text="打开">
+
+                <!--                    <items>-->
+                <!--                    <MenuItem text="退出" onAction="#handleExit"/>-->
+                <!--                </items>-->
+                <MenuItem fx:id="openDirectoryMenuItem" text="打开目录" onAction="#handleOpenDirectory"/>
+                <!--                        <MenuItem text="退出" onAction="#handleExit"/>-->
+                <Menu fx:id="recentMenu" text="最近打开" onAction="#handleOpenRecently"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <VBox  fx:id="centerVBox">
+            <ListView fx:id="imageListView" BorderPane.alignment="CENTER"  />
+            <Button fx:id="startConversionButton" text="开始转换" onAction="#handleStartConversion" />
+            <Label fx:id="labelCount"/>
+        </VBox> <!-- 使用Region填充剩余空间，并设置其prefHeight为centerVBox的1.5倍 -->
+
+    </center>
+    <bottom>
+<!--        <VBox fx:id="consoleBox" BorderPane.alignment="BOTTOM_CENTER">-->
+<!--            <HBox  >-->
+<!--                <Label fx:id="labelInfoId"/> <Label fx:id="labelState"/> <Label fx:id="labelMsg"/></HBox>-->
+        <TextArea fx:id="resultTextArea" editable="false" prefHeight="300.0" />
+<!--        </VBox>   <Region fx:id="bottomPadding" BorderPane.alignment="CENTER"-->
+<!--                          prefHeight="100" visible="false"/>-->
+    </bottom>
+<!--    <padding>-->
+<!--        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />-->
+<!--    </padding>-->
+</BorderPane>
