@@ -3,6 +3,7 @@ package com.jasonhong.fx.main.fxml.ocr;
 
 import com.jasonhong.fx.main.page.Page;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -23,8 +24,18 @@ public class ImageToText extends Application implements Page {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("image-to-text.fxml"));
 
             root = loader.load();
+            Parent finalRoot = root;
+            Platform.runLater(() -> {
+                        finalRoot.requestLayout();
+                    });
+//            Platform.runLater(() -> {
+//                // 更新UI的代码
+//                root.getChildren().clear();
+////                root.getChildren().addAll(createNewContent());
+//            });
             ImageToTextController controller =  loader.getController();
             controller.initTable();
+            root.layout();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

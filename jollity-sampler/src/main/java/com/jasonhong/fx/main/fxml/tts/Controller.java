@@ -2,10 +2,12 @@ package com.jasonhong.fx.main.fxml.tts;
 
 import com.jasonhong.core.common.Callback;
 import com.jasonhong.core.common.Result;
-import com.jasonhong.fx.main.layout.BottomStateBar;
+import com.jasonhong.core.common.Status;
 import com.jasonhong.fx.util.FXUtil;
 import com.jasonhong.fx.util.MediaPlayerUtil;
 import com.jasonhong.fx.util.RecentFilesManager;
+//import com.jasonhong.media.audio.AudioTagWriter;
+import com.jasonhong.services.mq.tts.client.TextToSpeakInfo;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+import static com.jasonhong.fx.main.fxml.tts.Constants.AUDIO_ARTIST;
 import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
 
 
@@ -148,6 +151,7 @@ private int completedSteps;
                     System.out.println("正在处理: " + result);
                     Platform.runLater(()-> {
                         updateConsole(result);
+                        BOTTOM_STATE_BAR.updateProgress(result.getMsg(),completedSteps,totalSteps);
                     });
                 }
 
@@ -155,11 +159,27 @@ private int completedSteps;
                 public void onResult(Result result) {
                     System.out.println("任务完成，结果: " + result);
                     // 在这里可以执行任何需要的操作，例如更新UI等
+                    //完成，写入媒体数据
 Platform.runLater(()->{
+    //handle audio when done;
+    handleAudio(result);
    updateConsole(result);
 //    resultTextArea.appendText((+ result.getMsg()+"\n");
     updateProgress(result);
 });
+                }
+
+                private void handleAudio(Result result) {
+                    if(result.getCode().equals(Status.SUCCESS)){
+                        TextToSpeakInfo info =  (TextToSpeakInfo)result.getData();
+                        try {
+                            MediaPlayerUtil.setTag(info.getOutFile(),info.getOutFile().getName(),AUDIO_ARTIST,Constants.AUDIO_ALBUM, info.getOrgText() );
+
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
                 }
 
                 @Override
@@ -210,48 +230,9 @@ Platform.runLater(()->{
     }
 
     private void updateConsole(Result result) {
-
-//        resultTextArea.appendText(result.getId()+":" + result.getMsg() +"/n");
         if (result.getData() != null) {
-            if (result.getData() instanceof File) {
-                resultTextArea.appendText(((File) result.getData()).getName() + result.getMsg() + "\n");
-            }else{
-                resultTextArea.appendText( result.getData() + result.getMsg() + "\n");
-            }  }
-//        HBox hb = new HBox();
-//        hb.setId(String.valueOf(result.getId()));
-//        Label labelInfoId = new Label();
-//        Label labelState = new Label();
-//        Label labelMsg = new Label();
-//        if (result.getCode() == 1) {
-//            labelMsg.getStyleClass().add("green-label");
-//        } else if (result.getCode() == 0) {
-//            labelMsg.getStyleClass().add("red-label");
-//        } else {
-//            labelMsg.getStyleClass().add("normal-label");
-//        }
-//        labelMsg.setText(result.getMsg());
-//        if (result.getData() != null) {
-//            if (result.getData() instanceof File) {
-//                labelInfoId.setText(((File) result.getData()).getName());
-//            } else {
-//                labelInfoId.setText(result.getData().toString());
-//            }
-//
-//        }
-////        hb.getChildren().addAll(labelInfoId, labelState, labelMsg);
-////        if(consoleBox.getChildren()!=null && consoleBox.getChildren().size()>0) {
-////            if (consoleBox.getChildren().get(Integer.parseInt(hb.getId())) != null) {
-////                hb = (HBox) consoleBox.getChildren().get(Integer.parseInt(hb.getId()));
-////                hb.getChildren().clear();
-////            } else {
-////                consoleBox.getChildren().add(hb);
-////            }
-////        }else{
-////        }
-//        hb.getChildren().addAll(labelInfoId, labelState, labelMsg);
-//        consoleBox.getChildren().add(hb);
-
+            resultTextArea.appendText(result.getMsg() + "\n");
+        }
     }
 
     public void handleOpenRecently(ActionEvent actionEvent) {

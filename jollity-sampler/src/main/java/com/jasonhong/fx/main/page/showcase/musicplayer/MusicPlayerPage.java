@@ -13,8 +13,8 @@ import java.util.Set;
 
 public class MusicPlayerPage extends ShowcasePage {
 
-    public static final String NAME = "Music Player";
-    public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3");
+    public static final String NAME = "音频播放器";
+    public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3","wav","a4m");
     private static final String STYLESHEET_URL =
         Objects.requireNonNull(MusicPlayerPage.class.getResource("music-player.css")).toExternalForm();
 

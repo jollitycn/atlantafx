@@ -14,7 +14,7 @@ import java.io.File;
 
 class ThemeRepoManagerDialog extends ModalDialog {
 
-    private final com.jasonhong.fx.main.page.general.ThemeRepoManager repoManager = new com.jasonhong.fx.main.page.general.ThemeRepoManager();
+    private final ThemeRepoManager repoManager = new ThemeRepoManager();
 
     public ThemeRepoManagerDialog() {
         super();
@@ -41,7 +41,7 @@ class ThemeRepoManagerDialog extends ModalDialog {
         content.setFooter(footer);
     }
 
-    public com.jasonhong.fx.main.page.general.ThemeRepoManager getContent() {
+    public ThemeRepoManager getContent() {
         return repoManager;
     }
 }

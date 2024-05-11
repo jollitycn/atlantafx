@@ -3,7 +3,7 @@
 package com.jasonhong.fx.main.theme;
 
 import atlantafx.base.theme.*;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ThemeEvent;
 import com.jasonhong.fx.main.event.ThemeEvent.EventType;

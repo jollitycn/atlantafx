@@ -3,8 +3,8 @@
 package com.jasonhong.fx.main.layout;
 
 import com.jasonhong.fx.main.page.Page;
-import com.jasonhong.fx.main.page.components.*;
-import com.jasonhong.fx.main.page.general.BBCodePage;
+//import com.jasonhong.fx.main.page.components.*;
+//import com.jasonhong.fx.main.page.general.BBCodePage;
 import javafx.scene.Node;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,19 +21,19 @@ record Nav(String title,
     public static final Nav ROOT = new Nav("ROOT", null, null, null);
 
     private static final Set<Class<? extends Page>> TAGGED_PAGES = Set.of(
-        BBCodePage.class,
-        BreadcrumbsPage.class,
-        CalendarPage.class,
-        CardPage.class,
-        CustomTextFieldPage.class,
-        DeckPanePage.class,
-        InputGroupPage.class,
-        MessagePage.class,
-        ModalPanePage.class,
-        NotificationPage.class,
-        PopoverPage.class,
-        TilePage.class,
-        ToggleSwitchPage.class
+//        BBCodePage.class,
+//        BreadcrumbsPage.class,
+//        CalendarPage.class,
+//        CardPage.class,
+//        CustomTextFieldPage.class,
+//        DeckPanePage.class,
+//        InputGroupPage.class,
+//        MessagePage.class,
+//        ModalPanePage.class,
+//        NotificationPage.class,
+//        PopoverPage.class,
+//        TilePage.class,
+//        ToggleSwitchPage.class
     );
 
     public Nav {

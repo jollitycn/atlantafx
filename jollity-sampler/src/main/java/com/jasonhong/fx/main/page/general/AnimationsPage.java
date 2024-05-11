@@ -5,7 +5,7 @@ package com.jasonhong.fx.main.page.general;
 import atlantafx.base.theme.Styles;
 import atlantafx.base.util.Animations;
 import atlantafx.base.util.BBCodeParser;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.Snippet;
 import com.jasonhong.fx.main.util.NodeUtils;

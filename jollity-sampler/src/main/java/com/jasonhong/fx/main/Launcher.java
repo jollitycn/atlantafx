@@ -8,7 +8,6 @@ import com.jasonhong.fx.main.event.HotkeyEvent;
 import com.jasonhong.fx.main.event.Listener;
 import com.jasonhong.fx.main.layout.ApplicationWindow;
 import com.jasonhong.fx.main.theme.ThemeManager;
-import com.jasonhong.fx.main.util.Resources;
 import fr.brouillard.oss.cssfx.CSSFX;
 import fr.brouillard.oss.cssfx.api.URIToPathConverter;
 import fr.brouillard.oss.cssfx.impl.log.CSSFXLogger;
@@ -75,7 +74,18 @@ public class Launcher extends Application {
             startCssFX(scene);
         }
 
-        scene.getStylesheets().addAll(Resources.resolve("assets/styles/index.css"));
+//        scene.getStylesheets().addAll(Resources.resolve("assets/styles/index.css"));
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.isAltDown() && event.isShiftDown()  && event.getCode() == KeyCode.A) {
+                // 按下Alt+A时执行的操作
+                System.out.println("Shift+Alt+A is pressed!");
+                //open snapshot window
+                com.jasonhong.fx.util.ScreenCaptureApp.handleSnapshot(event);
+                event.consume();
+            }
+        });
+
+
 
         stage.setScene(scene);
         stage.setTitle(System.getProperty("app.name"));
@@ -145,6 +155,8 @@ public class Launcher extends Application {
             }
         }
     }
+
+
 
     @Listener
     private void onBrowseEvent(BrowseEvent event) {

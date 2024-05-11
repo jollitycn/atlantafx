@@ -2,8 +2,10 @@ package com.jasonhong.fx.main.fxml.tts;
 
 import com.jasonhong.core.common.Callback;
 import com.jasonhong.core.common.Result;
+import com.jasonhong.core.common.Status;
 import com.jasonhong.fx.util.FXUtil;
 import com.jasonhong.fx.util.MediaPlayerUtil;
+import com.jasonhong.media.audio.util.SupportedFileFormat;
 import com.jasonhong.services.mq.tts.client.TextToSpeakMqttPublisher;
 
 import java.io.File;
@@ -30,7 +32,6 @@ public class Service {
              createDocumentsByTask(i,user,file,outputDir, callback);
         }
 
-
     }
     private static final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
@@ -45,8 +46,8 @@ public class Service {
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
                     Result result = new Result(index);
-                    result.setMsg("处理中");
-                    result.setCode(1);
+                    result.setMsg("创建任务：" + file.getAbsolutePath());
+                    result.setCode(Status.RUNNING);
                     result.setData(file);
 
                     try {
@@ -58,7 +59,7 @@ public class Service {
                         System.out.println("Processing: " + user + " " + file.getName() );
                         callback.onAction(result);
                         TextToSpeakMqttPublisher publisher = new TextToSpeakMqttPublisher();
-                       String  fileName = file.getName().replaceFirst("\\.[^.]+$", ".wav");
+                       String  fileName = file.getName().replaceFirst("\\.[^.]+$",  SupportedFileFormat.MP3.getFilesuffixWithDot());
                        String outPutPath = String.valueOf(Path.of(file.getParent(),fileName));
                         publisher.init(index,user,file.getAbsolutePath(),outPutPath,callback);
                         System.out.println("Processed: " + user + " " + file.getName() + ", Output: " + outPutPath);
@@ -84,7 +85,7 @@ public class Service {
                     e.printStackTrace();
                     Result result = new Result(index);
                     result.setMsg("处理异常" + e.getMessage());
-                    result.setCode(0);
+                    result.setCode(Status.ERROR);
                     result.setData(file);
                     // 如果有异常发生，调用回调接口的 onError 方法
                     callback.onError(result,(Exception) e);

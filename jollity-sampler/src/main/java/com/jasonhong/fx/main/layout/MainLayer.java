@@ -107,6 +107,7 @@ public class MainLayer extends BorderPane {
 
         setId("main");
          setTop(headerBar);
+
         setLeft(sidebar);
         setCenter(subLayerPane);
         BOTTOM_STATE_BAR.setMaxHeight(ApplicationWindow.BOTTOMBAR_HEIGHT);
@@ -153,12 +154,12 @@ public class MainLayer extends BorderPane {
                     .findFirst()
                 .orElse(null);
             Page nextPage = pageClass.getDeclaredConstructor().newInstance();
-            if(  nextPage.getClass()== MainModel.DEFAULT_PAGE) {
-                nextPage = DEFAULT_PAGE_INSTANCE;
-            }
+//            if(  nextPage.getClass()== MainModel.DEFAULT_PAGE) {
+//                nextPage = DEFAULT_PAGE_INSTANCE;
+//            }
 
             // startup, no prev page, no animation
-            if (getScene() == null) {
+            if (getScene() == null || prevPage==null) {
                 subLayerPane.getChildren().add(nextPage.getView());
                 return;
             }
@@ -170,26 +171,20 @@ public class MainLayer extends BorderPane {
 //            }
             // reset previous page, e.g. to free resources
 
+            Objects.requireNonNull(prevPage);
+            prevPage.reset();
 
             // animate switching between pages
 //                nextPage = DEFAULT_PAGE_INSTANCE;
 
-            try {
                 subLayerPane.getChildren().add(nextPage.getView());
-            }catch (Exception e){}
-
-            try {
-                Objects.requireNonNull(prevPage);
-                prevPage.reset();
                 subLayerPane.getChildren().remove(prevPage.getView());
-            }catch (Exception e){e.printStackTrace();}
 
             var transition = new FadeTransition(Duration.millis(PAGE_TRANSITION_DURATION), nextPage.getView());
             transition.setFromValue(0.0);
             transition.setToValue(1.0);
-            Page finalNextPage = nextPage;
             transition.setOnFinished(t -> {
-                if (finalNextPage instanceof Pane nextPane) {
+                if (nextPage instanceof Pane nextPane) {
                     nextPane.toFront();
                 }
             });

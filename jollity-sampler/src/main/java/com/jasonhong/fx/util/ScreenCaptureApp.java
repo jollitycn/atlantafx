@@ -3,6 +3,8 @@ package com.jasonhong.fx.util;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ScreenCaptureEvent;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -37,6 +39,17 @@ public class ScreenCaptureApp extends Application {
     public ScreenCaptureApp(){
 
     }
+
+
+    public static void handleSnapshot(Event actionEvent) {
+        System.out.println("handleSnapshot");
+//            EventBusUtil.getDefault().post();
+        Stage snapshotStage = new Stage();
+        snapshotStage.setTitle("屏幕截图");
+        ScreenCaptureApp app = new ScreenCaptureApp();
+        app.start(snapshotStage);
+    }
+
     Pane childPane;
     @Override
     public void start(Stage primaryStage) {

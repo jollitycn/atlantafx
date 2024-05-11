@@ -2,7 +2,7 @@
 
 package com.jasonhong.fx.main.page.showcase.musicplayer;
 
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.jasonhong.fx.main.page.showcase.musicplayer.MediaFile.Metadata.*;
 import static com.jasonhong.fx.main.page.showcase.musicplayer.Utils.copyImage;
+
 
 @SuppressWarnings("StringOperationCanBeSimplified")
 record MediaFile(Path path) {
@@ -37,10 +37,10 @@ record MediaFile(Path path) {
                 var image = getTag(metadata, "image", Image.class, null);
                 // clone everything to make sure media player will be garbage collected
                 return new Metadata(
-                    new String(getTag(metadata, "title", String.class, NO_TITLE)),
+                    new String(getTag(metadata, "title", String.class, Metadata.NO_TITLE)),
                     image != null ? copyImage(image) : null,
-                    new String(getTag(metadata, "artist", String.class, NO_ARTIST)),
-                    new String(getTag(metadata, "album", String.class, NO_ALBUM)),
+                    new String(getTag(metadata, "artist", String.class, Metadata.NO_ARTIST)),
+                    new String(getTag(metadata, "album", String.class, Metadata.NO_ALBUM)),
                     media.getDuration().toMillis()
                 );
             }));

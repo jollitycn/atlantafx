@@ -1,21 +1,24 @@
 package com.jasonhong.fx.util;
 
+import com.jasonhong.media.audio.util.AudioUtil;
+import com.jasonhong.media.audio.util.ID3v24UtilTag;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.IOException;
 import java.util.Random;
 
 public class MediaPlayerUtil {
     static MediaPlayer mediaPlayer;
-public static String AUDIO_HANDLING = "app/audio/0001.wav";
+    public static String AUDIO_HANDLING = "app/audio/0001.wav";
     public static String AUDIO_HANDLED = "app/audio/0002.wav";
     public static String AUDIO_EORROR = "app/audio/0003.wav";
     public static String AUDIO_TEXT_FILE_ERROR = "app/audio/0004.wav";
     public static String AUDIO_TEXT_FILE_ERROR_256 = "app/audio/0005.wav";
-    public static String[] AUDIO_TEXT_FILE_ERRORS = new String[]{AUDIO_TEXT_FILE_ERROR,AUDIO_TEXT_FILE_ERROR_256};
+    public static String[] AUDIO_TEXT_FILE_ERRORS = new String[]{AUDIO_TEXT_FILE_ERROR, AUDIO_TEXT_FILE_ERROR_256};
 
     private static MediaPlayer getInstance(Media media) {
 
@@ -24,22 +27,33 @@ public static String AUDIO_HANDLING = "app/audio/0001.wav";
         }
         return mediaPlayer;
     }
-    public static void playRandom(String[] audioFiles )  {
+
+    public static void playRandom(String[] audioFiles) {
         Random random = new Random(audioFiles.length);
-        String audioFile =audioFiles[random.nextInt()];
+        String audioFile = audioFiles[random.nextInt()];
         AudioClip audioClip = null;
         audioClip = new AudioClip(new File(audioFile).toURI().toString());
-        if(audioClip!=null){
+        if (audioClip != null) {
             // 播放声音
             audioClip.play();
         }
     }
-    public static void play(String audioFile)  {
+
+    public static void play(String audioFile) {
         AudioClip audioClip = null;
-            audioClip = new AudioClip(new File(audioFile).toURI().toString());
-        if(audioClip!=null){
-        // 播放声音
-        audioClip.play();
+        audioClip = new AudioClip(new File(audioFile).toURI().toString());
+        if (audioClip != null) {
+            // 播放声音
+            audioClip.play();
+        }
+    }
+
+    public static void play(File audioFile) {
+        AudioClip audioClip = null;
+        audioClip = new AudioClip(audioFile.toURI().toString());
+        if (audioClip != null) {
+            // 播放声音
+            audioClip.play();
         }
     }
 
@@ -61,6 +75,17 @@ public static String AUDIO_HANDLING = "app/audio/0001.wav";
                 System.out.println("Audio playback finished.");
             }
         });
+
+    }
+
+    public static void setTag(File outFile, String name, String audioArtist, String audioAlbum, String orgText) throws Exception {
+        ID3v24UtilTag tag = (ID3v24UtilTag) AudioUtil.getTag(outFile);
+        tag.setTrack(String.valueOf(System.currentTimeMillis()));
+        tag.setArtist(audioArtist);
+        tag.setTitle(name);
+        tag.setAlbum(audioAlbum);
+
+        AudioUtil.updateAudioTag(outFile, tag);
 
     }
 }

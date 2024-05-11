@@ -14,15 +14,22 @@ import java.io.IOException;
 import java.net.URI;
 
 public class App extends Application implements Page {
+public App(){
 
-    public Parent getRoot() throws IOException {
+}
+    public Parent getRoot()  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
-        Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return root;
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage)   {
         // 加载FXML文件
         Parent root =   getRoot();
         Stage stage;
@@ -55,7 +62,7 @@ public class App extends Application implements Page {
 
     @Override
     public Parent getView() {
-        return null;
+        return getRoot() ;
     }
 
     @Override

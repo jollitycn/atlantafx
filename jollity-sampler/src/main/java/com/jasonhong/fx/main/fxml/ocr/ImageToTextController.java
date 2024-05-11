@@ -30,7 +30,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -41,16 +44,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
 import org.apache.commons.io.FileUtils;
 import org.kordamp.ikonli.feather.Feather;
+import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.javafx.FontIconTableCell;
 
 import javax.imageio.ImageIO;
@@ -74,19 +76,19 @@ public class ImageToTextController {
 
     //    private static final JComponent PGORGRESS_BAR = ;
     public Label labelCount; // 确保有一个无参数的构造方法
-    public Menu recentMenu;
-    public MenuItem snapshotButton;
+//    public Menu recentMenu;
+//    public MenuItem snapshotButton;
     public BorderPane rootPane;
 
     public ImageToTextController() {
         // 可以在这里进行初始化操作，但通常保持为空
         DefaultEventBus.getInstance().subscribe(ScreenCaptureEvent.class, this::eventHandling);
     }
-
-    @FXML
-    public MenuItem openDirectoryMenuItem;
-    @FXML
-    public MenuBar openDirectoryMenuBar;
+//
+//    @FXML
+//    public MenuItem openDirectoryMenuItem;
+//    @FXML
+////    public MenuBar openDirectoryMenuBar;
 
     @FXML
     public Button startConversionButton;
@@ -114,6 +116,55 @@ public class ImageToTextController {
     }
 
     public void initTable() {
+//snippet_1:start
+
+        Button btnFolder= new Button("目录", new FontIcon(Feather.FOLDER));
+        Button btnSnagshot= new Button("截屏", new FontIcon(Feather.IMAGE));
+        labelCount = new Label();
+        var iconMenuBtn = new MenuButton("最近的项目",new FontIcon(Feather.MORE_HORIZONTAL));
+          startConversionButton  = new Button("开始", new FontIcon(Feather.PLAY));
+        final var toolbar1 = new ToolBar(btnFolder,iconMenuBtn,btnSnagshot,
+//                new Button("New", new FontIcon(Feather.PLUS)),
+//                new Button("文件", new FontIcon(Feather.FILE)),
+//                new Button("目录", new FontIcon(Feather.FILE)),
+//                new Button("Save", new FontIcon(Feather.SAVE)),
+                new Separator(Orientation.VERTICAL),startConversionButton,labelCount,new Region()//,
+//                new Button("Clean", new FontIcon(Feather.ROTATE_CCW)),
+//                new Button("Compile", new FontIcon(Feather.LAYERS)),
+//                        new Button("开始", new FontIcon(Feather.PLAY))
+
+        );
+
+        iconMenuBtn.getStyleClass().addAll(
+                  Tweaks.NO_ARROW
+        );
+
+        iconMenuBtn.getItems().setAll(handleOpenRecently());
+        btnFolder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                handleOpenDirectory(mouseEvent);
+            }
+        });
+        btnSnagshot.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                handleSnapshot(mouseEvent);
+            }
+        });
+        startConversionButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                handleStartConversion(mouseEvent);
+            }
+        });
+
+
+        HBox topBox = new HBox();
+        topBox.getChildren().add(toolbar1);
+        HBox.setHgrow(topBox, Priority.ALWAYS);
+        HBox.setHgrow(labelCount, Priority.ALWAYS);
+        rootPane.setTop(topBox);
 
         var indexCol = new TableColumn<ImageToTextInfo, String>("");
         indexCol.setCellFactory(col -> {
@@ -167,7 +218,7 @@ public class ImageToTextController {
 
 
     @FXML
-    private void handleOpenDirectory(ActionEvent event) {
+    private void handleOpenDirectory(Event event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File directory = directoryChooser.showDialog(getPrimaryStage());
         if (directory != null) {
@@ -223,7 +274,7 @@ public class ImageToTextController {
     }
 
     @FXML
-    public void handleStartConversion(ActionEvent actionEvent) {
+    public void handleStartConversion(Event actionEvent) {
         startConversionButton.setDisable(true);
         BOTTOM_STATE_BAR.initProgress();
 
@@ -246,7 +297,7 @@ public class ImageToTextController {
             Callback<Result> callback = new Callback<Result>() {
                 @Override
                 public void onAction(Result result) {
-                    System.out.println("正在处理: " + result);
+                    System.out.println("正在执行: " + result);
                     Platform.runLater(() -> {
                         try {
                             handleResult(result);
@@ -258,7 +309,7 @@ public class ImageToTextController {
 
                 @Override
                 public void onResult(Result result) {
-                    System.out.println("异步任务完成，结果: " + result);
+                    System.out.println("任务完成: " + result);
                     // 在这里可以执行任何需要的操作，例如更新UI等
                     Platform.runLater(() -> {
 //                        File file = (File) result.getData();
@@ -293,7 +344,7 @@ public class ImageToTextController {
                         case START: {
                             ImageToTextHandler.updateResult(imageFiles, result);
                         }
-                        case Success: {
+                        case SUCCESS: {
                             ImageToTextHandler.saveOutput(imageFiles, result, (File) result.getData());
                             break;
                         }
@@ -313,7 +364,7 @@ public class ImageToTextController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("消息");
                         alert.setHeaderText(null); // 可以设置标题上方的描述性文本，如果不需要则为null
-                        alert.setContentText("处理结束！"); // 设置对话框的内容文本
+                        alert.setContentText("创建结束！"); // 设置对话框的内容文本
                         BOTTOM_STATE_BAR.completeProgress();
 
                         startConversionButton.setDisable(false);
@@ -333,11 +384,16 @@ public class ImageToTextController {
     }
 
     List<File> recentFiles;
-
-    public void handleOpenRecently(ActionEvent actionEvent) {
+    private MenuItem[] createItems(int count) {
+        return IntStream.range(0, count)
+                .mapToObj(i -> new MenuItem(FAKER.babylon5().character()))
+                .toArray(MenuItem[]::new);
+    }
+    public MenuItem[] handleOpenRecently( ) {
+        List<MenuItem> menuItems = new ArrayList<>();
         if (recentFiles == null) {
             recentFiles = new RecentFilesManager(null).getRecentFiles();
-            recentMenu.getItems().clear();
+//            recentMenu.getItems().clear();
             for (File fileName : recentFiles) { // 假设 recentFiles 是一个包含最近打开文件名的列表
                 MenuItem menuItem = new MenuItem(fileName.getPath());
                 menuItem.setOnAction(event -> {
@@ -354,9 +410,10 @@ public class ImageToTextController {
                         }
                     }
                 });
-                recentMenu.getItems().add(menuItem);
+                menuItems.add(menuItem);
             }
         }
+        return menuItems.toArray(new MenuItem[0]);
 //        openRecently.
     }
 
@@ -399,15 +456,10 @@ public class ImageToTextController {
         }
     }
 
-    public void handleSnapshot(ActionEvent actionEvent) {
-        System.out.println("handleSnapshot");
-//            EventBusUtil.getDefault().post();
-        Stage snapshotStage = new Stage();
-        snapshotStage.setTitle("屏幕截图");
-        ScreenCaptureApp app = new ScreenCaptureApp();
-        app.start(snapshotStage);
-
+    public void handleSnapshot(Event actionEvent) {
+        com.jasonhong.fx.util.ScreenCaptureApp.handleSnapshot(actionEvent);
     }
+
 
     // 辅助方法，例如加载图片到ListView，调用OCR服务等
     // ...

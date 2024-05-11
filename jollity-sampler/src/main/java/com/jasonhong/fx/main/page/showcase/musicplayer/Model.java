@@ -3,7 +3,7 @@
 package com.jasonhong.fx.main.page.showcase.musicplayer;
 
 import com.jasonhong.fx.main.Launcher;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;

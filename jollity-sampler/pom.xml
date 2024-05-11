@@ -107,6 +107,18 @@
             <artifactId>ocr</artifactId>
             <version>1</version>
         </dependency>
+        <dependency>
+            <groupId>com.jasonhong.services</groupId>
+            <artifactId>services-mq</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -245,77 +257,77 @@
                     <outputDirectory>${build.dependenciesDir}</outputDirectory>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>io.github.wiverson</groupId>
-                <artifactId>jtoolprovider-plugin</artifactId>
-                <executions>
-                    <!-- create custom JRE image -->
-                    <execution>
-                        <id>create-runtime-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>java-tool</goal>
-                        </goals>
-                        <configuration>
-                            <toolName>jlink</toolName>
-                            <addModules>
-                                java.base,java.logging,jdk.localedata,jdk.zipfs,java.desktop,java.prefs,javafx.controls,javafx.fxml,javafx.swing,javafx.web
-                            </addModules>
-                            <modulePath>${build.platformModulesDir}</modulePath>
-                            <output>${build.package.runtimeImageDir}</output>
-                            <args>
-                                <!-- additional options to shrink resulting image even more -->
-                                <arg>--compress=2</arg>
-                                <arg>--include-locales=en</arg>
-                                <arg>--no-header-files</arg>
-                                <arg>--no-man-pages</arg>
-                                <arg>--strip-debug</arg>
-                                <arg>--verbose</arg>
-                            </args>
-                        </configuration>
-                    </execution>
-                    <!-- create application image (includes JRE plus application JARs and resources) -->
-                    <execution>
-                        <id>create-app-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>java-tool</goal>
-                        </goals>
-                        <configuration>
-                            <toolName>jpackage</toolName>
-                            <removeDirectories>${build.package.tempDir}</removeDirectories>
-                            <args>
-                                <arg>@${build.package.scriptsDir}${file.separator}args-base.txt</arg>
-                                <arg>@${build.package.scriptsDir}${file.separator}args-app-image.txt</arg>
-                            </args>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- compress app image and place result to the release dir -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>assembly</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${build.releaseDir}</outputDirectory>
-                            <finalName>${build.artifactName}</finalName>
-                            <attach>false</attach>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <tarLongFileMode>posix</tarLongFileMode>
-                            <descriptors>
-                                <descriptor>src/package-scripts/app-image.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>io.github.wiverson</groupId>-->
+<!--                <artifactId>jtoolprovider-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    &lt;!&ndash; create custom JRE image &ndash;&gt;-->
+<!--                    <execution>-->
+<!--                        <id>create-runtime-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>java-tool</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <toolName>jlink</toolName>-->
+<!--                            <addModules>-->
+<!--                                java.base,java.logging,jdk.localedata,jdk.zipfs,java.desktop,java.prefs,javafx.controls,javafx.fxml,javafx.swing,javafx.web-->
+<!--                            </addModules>-->
+<!--                            <modulePath>${build.platformModulesDir}</modulePath>-->
+<!--                            <output>${build.package.runtimeImageDir}</output>-->
+<!--                            <args>-->
+<!--                                &lt;!&ndash; additional options to shrink resulting image even more &ndash;&gt;-->
+<!--                                <arg>&#45;&#45;compress=2</arg>-->
+<!--                                <arg>&#45;&#45;include-locales=en</arg>-->
+<!--                                <arg>&#45;&#45;no-header-files</arg>-->
+<!--                                <arg>&#45;&#45;no-man-pages</arg>-->
+<!--                                <arg>&#45;&#45;strip-debug</arg>-->
+<!--                                <arg>&#45;&#45;verbose</arg>-->
+<!--                            </args>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    &lt;!&ndash; create application image (includes JRE plus application JARs and resources) &ndash;&gt;-->
+<!--                    <execution>-->
+<!--                        <id>create-app-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>java-tool</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <toolName>jpackage</toolName>-->
+<!--                            <removeDirectories>${build.package.tempDir}</removeDirectories>-->
+<!--                            <args>-->
+<!--                                <arg>@${build.package.scriptsDir}${file.separator}args-base.txt</arg>-->
+<!--                                <arg>@${build.package.scriptsDir}${file.separator}args-app-image.txt</arg>-->
+<!--                            </args>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--            &lt;!&ndash; compress app image and place result to the release dir &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>assembly</id>-->
+<!--                        <phase>install</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${build.releaseDir}</outputDirectory>-->
+<!--                            <finalName>${build.artifactName}</finalName>-->
+<!--                            <attach>false</attach>-->
+<!--                            <appendAssemblyId>false</appendAssemblyId>-->
+<!--                            <tarLongFileMode>posix</tarLongFileMode>-->
+<!--                            <descriptors>-->
+<!--                                <descriptor>src/package-scripts/app-image.xml</descriptor>-->
+<!--                            </descriptors>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <!-- skip module deployment -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

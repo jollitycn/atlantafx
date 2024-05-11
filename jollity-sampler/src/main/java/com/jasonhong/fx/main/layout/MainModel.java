@@ -4,6 +4,7 @@ package com.jasonhong.fx.main.layout;
 
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.NavEvent;
+import com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.general.ThemePage;
 import com.jasonhong.fx.main.page.home.HomePage;
@@ -79,7 +80,9 @@ public class MainModel {
         );
         var general = NavTree.Item.group("工具箱", new FontIcon(Material2OutlinedMZ.SPEED));
         general.getChildren().setAll(
-                NAV_TREE.get(ImageToText.class)
+                NAV_TREE.get(ImageToText.class),
+                NAV_TREE.get(com.jasonhong.fx.main.fxml.tts.App.class),
+                NAV_TREE.get(MusicPlayerPage.class)
         );
         general.setExpanded(false);
         var setting = NavTree.Item.group("设置", new FontIcon(Material2OutlinedMZ.SPEED));
@@ -107,8 +110,9 @@ public class MainModel {
         map.put(HomePage.class, NavTree.Item.page(HomePage.NAME, HomePage.class));
         map.put(ThemePage.class, NavTree.Item.page(ThemePage.NAME, ThemePage.class));
         map.put(BlueprintsPage.class, NavTree.Item.page(BlueprintsPage.NAME, BlueprintsPage.class));
+        map.put(com.jasonhong.fx.main.fxml.tts.App.class, NavTree.Item.page(com.jasonhong.fx.main.fxml.tts.App.NAME, com.jasonhong.fx.main.fxml.tts.App.class));
         map.put(ImageToText.class, NavTree.Item.page(ImageToText.NAME, ImageToText.class));
-
+        map.put(MusicPlayerPage.class, NavTree.Item.page(MusicPlayerPage.NAME, MusicPlayerPage.class));
         return map;
     }
 

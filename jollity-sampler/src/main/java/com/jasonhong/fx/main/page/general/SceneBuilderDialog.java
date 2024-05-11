@@ -5,7 +5,7 @@ package com.jasonhong.fx.main.page.general;
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.layout.DeckPane;
 import atlantafx.base.theme.Styles;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.event.BrowseEvent;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.layout.ModalDialog;
@@ -343,7 +343,7 @@ class SceneBuilderDialog extends ModalDialog {
         var docsLink = new Hyperlink("Documentation");
         docsLink.setGraphic(new FontIcon(Material2OutlinedAL.LINK));
         docsLink.setOnAction(e -> DefaultEventBus.getInstance().publish(
-            new BrowseEvent(URI.create("https://mkpaz.github.io/atlantafx/fxml/"))
+            new BrowseEvent(URI.create("https://mkpaz.github.io/com/jasonhong/fx/main/fxml/"))
         ));
 
         var imageBox = new HBox(20, menuImg, new VBox(20, msgLbl, docsLbl, docsLink));

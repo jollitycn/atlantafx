@@ -7,33 +7,33 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jasonhong.fx.main.fxml.ocr.ImageToTextController"
             fx:id="rootPane">
     <top>
-        <MenuBar>
-            <Menu text="打开">
+<!--        <MenuBar>-->
+<!--            <Menu text="打开">-->
 
-                <!--                    <items>-->
-                <!--                    <MenuItem text="退出" onAction="#handleExit"/>-->
-                <!--                </items>-->
-                <MenuItem fx:id="openDirectoryMenuItem" text="打开目录" onAction="#handleOpenDirectory"/>
-                <!--                        <MenuItem text="退出" onAction="#handleExit"/>-->
-                <Menu fx:id="recentMenu" text="最近打开" onAction="#handleOpenRecently"/>
-            </Menu>
-            <Menu text="工具">
-                <MenuItem text="截图" fx:id="snapshotButton" onAction="#handleSnapshot"/>
+<!--                &lt;!&ndash;                    <items>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <MenuItem text="退出" onAction="#handleExit"/>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </items>&ndash;&gt;-->
+<!--                <MenuItem fx:id="openDirectoryMenuItem" text="打开目录" onAction="#handleOpenDirectory"/>-->
+<!--                &lt;!&ndash;                        <MenuItem text="退出" onAction="#handleExit"/>&ndash;&gt;-->
+<!--                <Menu fx:id="recentMenu" text="最近打开" onAction="#handleOpenRecently"/>-->
+<!--            </Menu>-->
+<!--            <Menu text="工具">-->
+<!--                <MenuItem text="截图" fx:id="snapshotButton" onAction="#handleSnapshot"/>-->
 
-            </Menu>
-        </MenuBar>
+<!--            </Menu>-->
+<!--        </MenuBar>-->
     </top>
     <center>
         <VBox>
             <TableView fx:id="imageListView" VBox.vgrow="ALWAYS"/>
-            <GridPane hgap="10" vgap="10" styleClass="page" >
-            <padding>
-                <Insets top="20" left="20" bottom="20" right="20"/>
-            </padding>
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="" fx:id="labelCount"/>
-                <Button GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="btn,btn-default"  fx:id="startConversionButton"  text="开始转换" onAction="#handleStartConversion"/>
+<!--            <GridPane hgap="10" vgap="10" styleClass="page" >-->
+<!--            <padding>-->
+<!--                <Insets top="20" left="20" bottom="20" right="20"/>-->
+<!--            </padding>-->
+<!--                <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="" fx:id="labelCount"/>-->
+<!--                <Button GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="btn,btn-default"  fx:id="startConversionButton"  text="开始转换" onAction="#handleStartConversion"/>-->
 
-            </GridPane>
+<!--            </GridPane>-->
         </VBox>
     </center>
 <!--    <bottom>-->

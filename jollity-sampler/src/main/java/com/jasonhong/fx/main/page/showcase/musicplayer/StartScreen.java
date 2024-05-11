@@ -72,13 +72,14 @@ final class StartScreen extends BorderPane {
         setCenter(content);
         setPadding(new Insets(100));
         getStyleClass().add("start-screen");
+//        model.playDemo();
     }
 
     private void addFile() {
         var extensions = SUPPORTED_MEDIA_TYPES.stream().map(s -> "*." + s).toList();
         var fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter(
-            "MP3 files (" + String.join(", ", extensions) + ")",
+            "Audio files (" + String.join(", ", extensions) + ")",
             extensions
         ));
         List<File> files = fileChooser.showOpenMultipleDialog(getScene().getWindow());

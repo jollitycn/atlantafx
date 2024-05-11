@@ -4,7 +4,7 @@ package com.jasonhong.fx.main.page.general;
 
 import atlantafx.base.theme.Styles;
 import atlantafx.base.util.BBCodeParser;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ThemeEvent;
 import com.jasonhong.fx.main.page.OutlinePage;
@@ -37,7 +37,7 @@ import static com.jasonhong.fx.main.theme.ThemeManager.DEFAULT_FONT_SIZE;
 @SuppressWarnings("UnnecessaryLambda")
 public final class ThemePage extends OutlinePage {
 
-    public static final String NAME = "主题";
+    public static final String NAME = "Theme";
 
     private static final ThemeManager TM = ThemeManager.getInstance();
     private static final String DEFAULT_FONT_ID = "Default";
@@ -63,10 +63,10 @@ public final class ThemePage extends OutlinePage {
     ///////////////////////////////////////////////////////////////////////////
 
     private final ReadOnlyObjectWrapper<Color> bgBaseColor = new ReadOnlyObjectWrapper<>(Color.WHITE);
-    private final Lazy<com.jasonhong.fx.main.page.general.ThemeRepoManagerDialog> themeRepoManagerDialog;
-    private final Lazy<com.jasonhong.fx.main.page.general.ContrastCheckerDialog> contrastCheckerDialog;
-    private final Lazy<com.jasonhong.fx.main.page.general.SceneBuilderDialog> sceneBuilderDialog;
-    private final com.jasonhong.fx.main.page.general.ColorPalette colorPalette;
+    private final Lazy<ThemeRepoManagerDialog> themeRepoManagerDialog;
+    private final Lazy<ContrastCheckerDialog> contrastCheckerDialog;
+    private final Lazy<SceneBuilderDialog> sceneBuilderDialog;
+    private final ColorPalette colorPalette;
     private final ColorScale colorScale = new ColorScale(bgBaseColor);
     private final ChoiceBox<SamplerTheme> themeSelector = createThemeSelector();
     private final ComboBox<String> fontFamilyChooser = createFontFamilyChooser();
@@ -76,26 +76,26 @@ public final class ThemePage extends OutlinePage {
         super();
 
         themeRepoManagerDialog = new Lazy<>(() -> {
-            var dialog = new com.jasonhong.fx.main.page.general.ThemeRepoManagerDialog();
+            var dialog = new ThemeRepoManagerDialog();
             dialog.setClearOnClose(true);
             return dialog;
         });
 
         contrastCheckerDialog = new Lazy<>(() -> {
-            var dialog = new com.jasonhong.fx.main.page.general.ContrastCheckerDialog(bgBaseColor);
+            var dialog = new ContrastCheckerDialog(bgBaseColor);
             dialog.setClearOnClose(true);
             return dialog;
         });
 
         sceneBuilderDialog = new Lazy<>(() -> {
-            var dialog = new com.jasonhong.fx.main.page.general.SceneBuilderDialog();
+            var dialog = new SceneBuilderDialog();
             dialog.setClearOnClose(true);
             dialog.setOnClose(e -> dialog.reset());
             return dialog;
         });
 
-        colorPalette = new com.jasonhong.fx.main.page.general.ColorPalette(colorBlock -> {
-            com.jasonhong.fx.main.page.general.ContrastCheckerDialog dialog = contrastCheckerDialog.get();
+        colorPalette = new ColorPalette(colorBlock -> {
+            ContrastCheckerDialog dialog = contrastCheckerDialog.get();
             dialog.getContent().setValues(
                 colorBlock.getFgColorName(),
                 colorBlock.getFgColor(),
@@ -148,12 +148,12 @@ public final class ThemePage extends OutlinePage {
         themeRepoBtn.getStyleClass().addAll(Styles.BUTTON_ICON, Styles.FLAT);
         themeRepoBtn.setTooltip(new Tooltip("Settings"));
         themeRepoBtn.setOnAction(e -> {
-            com.jasonhong.fx.main.page.general.ThemeRepoManagerDialog dialog = themeRepoManagerDialog.get();
+            ThemeRepoManagerDialog dialog = themeRepoManagerDialog.get();
             dialog.getContent().update();
             dialog.show(getScene());
         });
 
-        var accentSelector = new com.jasonhong.fx.main.page.general.AccentColorSelector();
+        var accentSelector = new AccentColorSelector();
 
         // ~
 
@@ -171,7 +171,7 @@ public final class ThemePage extends OutlinePage {
         var sceneBuilderBtn = new Button("SceneBuilder Integration");
         sceneBuilderBtn.setGraphic(new ImageView(SCENE_BUILDER_ICON));
         sceneBuilderBtn.setOnAction(e -> {
-            com.jasonhong.fx.main.page.general.SceneBuilderDialog dialog = sceneBuilderDialog.get();
+            SceneBuilderDialog dialog = sceneBuilderDialog.get();
             dialog.show(getScene());
         });
 

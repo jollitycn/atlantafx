@@ -5,7 +5,7 @@ package com.jasonhong.fx.main.theme;
 import atlantafx.base.theme.Theme;
 import com.jasonhong.fx.main.FileResource;
 import com.jasonhong.fx.main.Launcher;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import fr.brouillard.oss.cssfx.CSSFX;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.jasonhong.fx.main.Launcher.IS_DEV_MODE;
-import static com.jasonhong.fx.main.util.Resources.resolve;
+import static com.jasonhong.fx.main.Resources.resolve;
 import static com.jasonhong.fx.main.theme.ThemeManager.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
@@ -179,7 +179,7 @@ public final class SamplerTheme implements Theme {
 
         try {
             FileResource testTheme = FileResource.createInternal(
-                Resources.resolve("theme-test/" + filename), Launcher.class
+                resolve("theme-test/" + filename), Launcher.class
             );
             if (!testTheme.exists()) {
                 throw new IOException();

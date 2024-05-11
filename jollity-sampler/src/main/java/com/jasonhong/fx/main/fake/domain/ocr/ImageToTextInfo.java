@@ -80,7 +80,7 @@ public Long getFileLength(){
         double progress = 0;
         if(result!=null) {
             switch (result.getCode()) {
-                case Success:
+                case SUCCESS:
                     progress = 1;
                     break;
                 case NONE:

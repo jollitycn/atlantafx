@@ -9,11 +9,12 @@ import java.util.Objects;
 
 import static com.jasonhong.fx.main.util.JColorUtils.toHexWithAlpha;
 
+
 final class PlayerScreen extends SplitPane {
 
-    private final com.jasonhong.fx.main.page.showcase.musicplayer.Model model;
+    private final Model model;
 
-    public PlayerScreen(com.jasonhong.fx.main.page.showcase.musicplayer.Model model) {
+    public PlayerScreen(Model model) {
         super();
 
         this.model = model;
@@ -22,8 +23,8 @@ final class PlayerScreen extends SplitPane {
     }
 
     private void createView() {
-        var player = new com.jasonhong.fx.main.page.showcase.musicplayer.PlayerPane(model);
-        var playlist = new com.jasonhong.fx.main.page.showcase.musicplayer.PlaylistPane(model);
+        var player = new PlayerPane(model);
+        var playlist = new PlaylistPane(model);
 
         getStyleClass().add("player-screen");
         getItems().setAll(player, playlist);

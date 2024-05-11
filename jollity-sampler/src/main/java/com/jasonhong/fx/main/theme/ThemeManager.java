@@ -3,7 +3,7 @@
 package com.jasonhong.fx.main.theme;
 
 import atlantafx.base.theme.*;
-import com.jasonhong.fx.main.util.Resources;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.EventBus;
 import com.jasonhong.fx.main.event.ThemeEvent;
@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.jasonhong.fx.main.util.Resources.getResource;
+import static com.jasonhong.fx.main.Resources.getResource;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class ThemeManager {

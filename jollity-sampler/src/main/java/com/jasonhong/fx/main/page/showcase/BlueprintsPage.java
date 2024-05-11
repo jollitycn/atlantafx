@@ -2,9 +2,9 @@
 
 package com.jasonhong.fx.main.page.showcase;
 
-import com.jasonhong.fx.main.util.Resources;
-import com.jasonhong.fx.main.util.NodeUtils;
+import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.page.Page;
+import com.jasonhong.fx.main.util.NodeUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

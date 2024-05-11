@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import static atlantafx.base.theme.Styles.TEXT_SMALL;
 
+
 final class IconBrowser extends TableView<List<Ikon>> {
 
     static final int FILTER_LEN = 2;
