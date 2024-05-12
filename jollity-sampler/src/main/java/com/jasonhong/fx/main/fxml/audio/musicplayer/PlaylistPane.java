@@ -23,7 +23,7 @@ import java.util.Objects;
 
 import static atlantafx.base.theme.Styles.*;
 import static com.jasonhong.fx.main.fxml.audio.musicplayer.MediaFile.Metadata.NO_IMAGE_ALT;
-import static com.jasonhong.fx.main.page.showcase.musicplayer.MusicPlayerPage.SUPPORTED_MEDIA_TYPES;
+import static com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage.SUPPORTED_MEDIA_TYPES;
 import static java.lang.Double.MAX_VALUE;
 import static javafx.geometry.Pos.CENTER_LEFT;
 import static javafx.scene.layout.Priority.ALWAYS;

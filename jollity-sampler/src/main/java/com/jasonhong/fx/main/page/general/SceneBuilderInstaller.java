@@ -20,7 +20,7 @@ import java.util.zip.ZipOutputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-final class SceneBuilderInstaller {
+public final class SceneBuilderInstaller {
 
     private static final String CONFIG_FILE_NAME = "SceneBuilder.cfg";
     private static final String THEME_PACK_FILE_NAME = "atlantafx-scene-builder.zip";

@@ -38,7 +38,7 @@
          <children>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/avatars/avatar4.png" />
+                  <Image url="@../../../images/avatars/avatar4.png" />
                </image>
             </ImageView>
             <Label text="Gethin Peters" />
@@ -55,7 +55,7 @@
          <children>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/avatars/avatar5.png" />
+                  <Image url="@../../../images/avatars/avatar5.png" />
                </image>
             </ImageView>
             <Label text="Gerard Gallagher" />
@@ -72,7 +72,7 @@
          <children>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/avatars/avatar6.png" />
+                  <Image url="@../../../images/avatars/avatar6.png" />
                </image>
             </ImageView>
             <Label text="Betty Lopez" />

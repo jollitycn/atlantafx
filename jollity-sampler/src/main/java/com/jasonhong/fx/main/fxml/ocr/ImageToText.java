@@ -13,10 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Set;
 
 public class ImageToText extends Application implements Page {
 
-    public static final String NAME =  "图像识别";
+    public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("png","jpg","jpeg");
+
+
+        public static final String NAME =  "图像识别";
 
     public Parent getRoot() {
         Parent root = null;

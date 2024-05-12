@@ -6,7 +6,7 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.Listener;
 import com.jasonhong.fx.main.event.TapPaneEvent;
 import com.jasonhong.fx.main.page.OutlinePage;
-import com.jasonhong.fx.main.page.showcase.BlueprintsPage;
+import com.jasonhong.fx.main.page.showcase.blueprints.BlueprintsPage;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Side;

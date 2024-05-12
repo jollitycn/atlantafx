@@ -35,6 +35,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -47,6 +48,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
@@ -65,6 +67,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+import static com.jasonhong.fx.main.fxml.ocr.ImageToText.SUPPORTED_MEDIA_TYPES;
 import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
 import static com.jasonhong.fx.main.page.Page.*;
 import static javafx.collections.FXCollections.observableArrayList;
@@ -76,7 +79,7 @@ public class ImageToTextController {
 
     //    private static final JComponent PGORGRESS_BAR = ;
     public Label labelCount; // 确保有一个无参数的构造方法
-//    public Menu recentMenu;
+    //    public Menu recentMenu;
 //    public MenuItem snapshotButton;
     public BorderPane rootPane;
 
@@ -118,17 +121,18 @@ public class ImageToTextController {
     public void initTable() {
 //snippet_1:start
 
-        Button btnFolder= new Button("目录", new FontIcon(Feather.FOLDER));
-        Button btnSnagshot= new Button("截屏", new FontIcon(Feather.IMAGE));
+        Button btnFile = new Button("文件", new FontIcon(Feather.FILE));
+        Button btnFolder = new Button("目录", new FontIcon(Feather.FOLDER));
+        Button btnSnagshot = new Button("截屏", new FontIcon(Feather.IMAGE));
         labelCount = new Label();
-        var iconMenuBtn = new MenuButton("最近的项目",new FontIcon(Feather.MORE_HORIZONTAL));
-          startConversionButton  = new Button("开始", new FontIcon(Feather.PLAY));
-        final var toolbar1 = new ToolBar(btnFolder,iconMenuBtn,btnSnagshot,
+        var iconMenuBtn = new MenuButton("最近的项目", new FontIcon(Feather.MORE_HORIZONTAL));
+        startConversionButton = new Button("开始", new FontIcon(Feather.PLAY));
+        final var toolbar1 = new ToolBar(btnFile, btnFolder, iconMenuBtn, btnSnagshot,
 //                new Button("New", new FontIcon(Feather.PLUS)),
 //                new Button("文件", new FontIcon(Feather.FILE)),
 //                new Button("目录", new FontIcon(Feather.FILE)),
 //                new Button("Save", new FontIcon(Feather.SAVE)),
-                new Separator(Orientation.VERTICAL),startConversionButton,labelCount,new Region()//,
+                new Separator(Orientation.VERTICAL), startConversionButton, labelCount, new Region()//,
 //                new Button("Clean", new FontIcon(Feather.ROTATE_CCW)),
 //                new Button("Compile", new FontIcon(Feather.LAYERS)),
 //                        new Button("开始", new FontIcon(Feather.PLAY))
@@ -136,10 +140,17 @@ public class ImageToTextController {
         );
 
         iconMenuBtn.getStyleClass().addAll(
-                  Tweaks.NO_ARROW
+                Tweaks.NO_ARROW
         );
 
         iconMenuBtn.getItems().setAll(handleOpenRecently());
+        btnFile.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                handleOpenFile(mouseEvent);
+            }
+        });
+
         btnFolder.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -216,6 +227,35 @@ public class ImageToTextController {
         return Feather.values()[RANDOM.nextInt(Feather.values().length)];
     }
 
+    @FXML
+    private void handleOpenFile(Event event) {
+        var extensions = SUPPORTED_MEDIA_TYPES.stream().map(s -> "*." + s).toList();
+        var fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
+                "图片文件 (" + String.join(", ", extensions) + ")",
+                extensions
+        ));
+        List<File> files = fileChooser.showOpenMultipleDialog(rootPane.getScene().getWindow());
+        if (files == null || files.isEmpty()) {
+            return;
+        }
+        toConvertFiles = FXCollections.observableArrayList();
+         imageFiles = FXCollections.observableArrayList();
+        for (File file : files) {
+            ImageToTextInfo info = new ImageToTextInfo();
+            info.setSourceFile(file);
+            imageFiles.add(info);
+            toConvertFiles.add(file);
+            new RecentFilesManager("image-to-text").addRecentFile(file);
+        }
+
+        imageListView.getItems().setAll(imageFiles);
+        labelCount.setText("检测到：" + imageFiles.size() + "张图片");
+//        Platform.runLater(()->{
+//            imageListView.refresh();
+//        });
+
+    }
 
     @FXML
     private void handleOpenDirectory(Event event) {
@@ -245,18 +285,27 @@ public class ImageToTextController {
     private ObservableList<ImageToTextInfo> findImageFilesInDirectory(File directory) {
         toConvertFiles = FXCollections.observableArrayList();
         ObservableList<ImageToTextInfo> imageFiles = FXCollections.observableArrayList();
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            if (file.isFile() && (file.getName().toLowerCase().endsWith(".png") || file.getName().toLowerCase().endsWith(".jpg")) || file.getName().toLowerCase().endsWith(".jpeg")) {
-                ImageToTextInfo info = new ImageToTextInfo();
-                //Todo:加載後臺加載 info.setImage(FXUtil.loadImageFromFile(file));
-                info.setSourceFile(file);
-                imageFiles.add(info);
+        if(directory.isFile()) {
+            extracted(directory, imageFiles);
+        }else{
 
-                toConvertFiles.add(file);
-                labelCount.setText("检测到：" + imageFiles.size() + "张图片");
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
+                extracted(file, imageFiles);
             }
         }
         return imageFiles;
+    }
+
+    private void extracted(File file, ObservableList<ImageToTextInfo> imageFiles) {
+        if (file.isFile() && (file.getName().toLowerCase().endsWith(".png") || file.getName().toLowerCase().endsWith(".jpg")) || file.getName().toLowerCase().endsWith(".jpeg")) {
+            ImageToTextInfo info = new ImageToTextInfo();
+            //Todo:加載後臺加載 info.setImage(FXUtil.loadImageFromFile(file));
+            info.setSourceFile(file);
+            imageFiles.add(info);
+
+            toConvertFiles.add(file);
+            labelCount.setText("检测到：" + imageFiles.size() + "张图片");
+        }
     }
 
     @FXML

@@ -23,7 +23,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.jasonhong.fx.main.page.showcase.musicplayer.MusicPlayerPage.SUPPORTED_MEDIA_TYPES;
+import static com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage.SUPPORTED_MEDIA_TYPES;
+
 
 final class StartScreen extends BorderPane {
 

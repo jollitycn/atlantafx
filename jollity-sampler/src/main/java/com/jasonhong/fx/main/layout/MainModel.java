@@ -9,7 +9,7 @@ import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.general.ThemePage;
 import com.jasonhong.fx.main.page.home.HomePage;
 import com.jasonhong.fx.main.fxml.ocr.ImageToText;
-import com.jasonhong.fx.main.page.showcase.BlueprintsPage;
+import com.jasonhong.fx.main.page.showcase.blueprints.BlueprintsPage;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.kordamp.ikonli.javafx.FontIcon;
