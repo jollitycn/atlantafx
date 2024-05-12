@@ -1,6 +1,6 @@
 package com.jasonhong.fx.main.util;
 
-import com.jasonhong.fx.util.ScreenCaptureWithSelection;
+import com.jasonhong.fx.main.util.ScreenCaptureWithSelection;
 
 public class Main {
 

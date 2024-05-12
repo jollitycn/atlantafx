@@ -1,4 +1,4 @@
-package com.jasonhong.fx.util;
+package com.jasonhong.fx.main.util;
 
 import javafx.application.Application;
 import javafx.application.Platform;

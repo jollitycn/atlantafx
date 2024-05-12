@@ -1,4 +1,4 @@
-package com.jasonhong.fx.util;
+package com.jasonhong.fx.main.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;

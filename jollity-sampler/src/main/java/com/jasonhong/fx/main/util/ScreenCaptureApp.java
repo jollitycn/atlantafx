@@ -1,9 +1,8 @@
-package com.jasonhong.fx.util;
+package com.jasonhong.fx.main.util;
 
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ScreenCaptureEvent;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;

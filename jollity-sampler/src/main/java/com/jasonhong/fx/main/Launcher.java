@@ -80,7 +80,7 @@ public class Launcher extends Application {
                 // 按下Alt+A时执行的操作
                 System.out.println("Shift+Alt+A is pressed!");
                 //open snapshot window
-                com.jasonhong.fx.util.ScreenCaptureApp.handleSnapshot(event);
+                com.jasonhong.fx.main.util.ScreenCaptureApp.handleSnapshot(event);
                 event.consume();
             }
         });

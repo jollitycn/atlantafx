@@ -3,8 +3,8 @@ package com.jasonhong.fx.main.fxml.tts;
 import com.jasonhong.core.common.Callback;
 import com.jasonhong.core.common.Result;
 import com.jasonhong.core.common.Status;
-import com.jasonhong.fx.util.FXUtil;
-import com.jasonhong.fx.util.MediaPlayerUtil;
+import com.jasonhong.fx.main.util.FXUtil;
+import com.jasonhong.fx.main.util.MediaPlayerUtil;
 import com.jasonhong.media.audio.util.SupportedFileFormat;
 import com.jasonhong.services.mq.tts.client.TextToSpeakMqttPublisher;
 
@@ -33,7 +33,7 @@ public class Service {
         }
 
     }
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(3);
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     public static void createDocumentsByTask (int index,String user,File file, File outputDir, Callback<Result> callback) throws ExecutionException, InterruptedException {
 

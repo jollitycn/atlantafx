@@ -2,7 +2,7 @@
 
 package com.jasonhong.fx.main.event;
 
-import com.jasonhong.fx.util.BeanUtil;
+import com.jasonhong.fx.main.util.BeanUtil;
 import javafx.scene.control.Control;
 import javafx.scene.control.Tab;
 

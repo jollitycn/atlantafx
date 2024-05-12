@@ -1,64 +1,40 @@
 package com.jasonhong.fx.main.fxml.ocr;
 
-import atlantafx.base.controls.Spacer;
-import atlantafx.base.controls.ToggleSwitch;
-import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
-import atlantafx.base.util.BBCodeParser;
 import com.jasonhong.core.common.Callback;
 import com.jasonhong.core.common.Result;
-import com.jasonhong.core.common.Status;
-import com.jasonhong.core.util.ImageUtils;
-import com.jasonhong.fx.main.event.BrowseEvent;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ScreenCaptureEvent;
-import com.jasonhong.fx.main.fake.domain.Product;
 import com.jasonhong.fx.main.fake.domain.ocr.ImageToTextInfo;
 import com.jasonhong.fx.main.page.components.tablView.ProgressBarTableCell;
-import com.jasonhong.fx.util.FXUtil;
-import com.jasonhong.fx.util.MediaPlayerUtil;
-import com.jasonhong.fx.util.RecentFilesManager;
-import com.jasonhong.fx.util.ScreenCaptureApp;
+import com.jasonhong.fx.main.util.FXUtil;
+import com.jasonhong.fx.main.util.MediaPlayerUtil;
+import com.jasonhong.fx.main.util.RecentFilesManager;
 import com.jasonhong.ocr.TesseractOCR;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.StringConverter;
-import org.apache.commons.io.FileUtils;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.javafx.FontIconTableCell;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -506,7 +482,7 @@ public class ImageToTextController {
     }
 
     public void handleSnapshot(Event actionEvent) {
-        com.jasonhong.fx.util.ScreenCaptureApp.handleSnapshot(actionEvent);
+        com.jasonhong.fx.main.util.ScreenCaptureApp.handleSnapshot(actionEvent);
     }
 
 
