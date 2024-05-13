@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 
-package com.jasonhong.fx.main.layout;
+package com.jasonhong.fx.main.page.home.sidebar;
 
+import com.jasonhong.fx.main.layout.ModalDialog;
+import com.jasonhong.fx.main.layout.ThemeThumbnail;
 import com.jasonhong.fx.main.theme.SamplerTheme;
 import com.jasonhong.fx.main.theme.ThemeManager;
 import javafx.geometry.Insets;

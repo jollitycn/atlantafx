@@ -23,20 +23,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.jasonhong.fx.main.layout.MainLayerTab.model;
+
 public final class NavTree extends TreeView<Nav> {
 
-    public NavTree(MainModel model) {
+    public NavTree() {
         super();
 
-        getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
-            if (!(val instanceof Item item)) {
-                return;
-            }
-
-            if (!item.isGroup()) {
-                model.navigate(item.pageClass());
-            }
-        });
+//        getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
+//            if (!(val instanceof Item item)) {
+//                return;
+//            }
+//
+//            if (!item.isGroup()) {
+//                model.navigate(item.pageClass());
+//            }
+//        });
 
         getStyleClass().addAll(Tweaks.EDGE_TO_EDGE);
         setShowRoot(false);
@@ -84,6 +86,9 @@ public final class NavTree extends TreeView<Nav> {
                     item.setExpanded(!item.isExpanded());
                     // scroll slightly above the target
                     getTreeView().scrollTo(getTreeView().getRow(item) - 10);
+                }
+                if (!item.isGroup()) {
+                    model.navigate(item.pageClass());
                 }
             });
 

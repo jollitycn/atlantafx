@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-package com.jasonhong.fx.main.layout;
+package com.jasonhong.fx.main.page.home.sidebar;
 
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.theme.Styles;
@@ -8,6 +8,8 @@ import com.jasonhong.fx.main.Resources;
 import com.jasonhong.fx.main.event.BrowseEvent;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.HotkeyEvent;
+import com.jasonhong.fx.main.layout.MainModel;
+import com.jasonhong.fx.main.layout.NavTree;
 import com.jasonhong.fx.main.util.Lazy;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -36,7 +38,7 @@ import java.util.Objects;
 import static atlantafx.base.theme.Styles.*;
 import static com.jasonhong.fx.main.Launcher.IS_DEV_MODE;
 
-final class Sidebar extends VBox {
+public final class Sidebar extends VBox {
 
     private final NavTree navTree;
     private final Lazy<SearchDialog> searchDialog;
@@ -45,7 +47,7 @@ final class Sidebar extends VBox {
     public Sidebar(MainModel model) {
         super();
 
-        this.navTree = new NavTree(model);
+        this.navTree = new NavTree();
 
         createView();
 
@@ -61,11 +63,11 @@ final class Sidebar extends VBox {
             return dialog;
         });
 
-        model.selectedPageProperty().addListener((obs, old, val) -> {
-            if (val != null) {
-                navTree.getSelectionModel().select(model.getTreeItemForPage(val));
-            }
-        });
+//        model.selectedPageProperty().addListener((obs, old, val) -> {
+//            if (val != null) {
+//                navTree.getSelectionModel().select(model.getTreeItemForPage(val));
+//            }
+//        });
 
         DefaultEventBus.getInstance().subscribe(HotkeyEvent.class, e -> {
             if (e.getKeys().getCode() == KeyCode.SLASH) {

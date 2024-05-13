@@ -2,26 +2,24 @@
 
 package com.jasonhong.fx.main.page.home;
 
-import com.jasonhong.fx.main.event.DefaultEventBus;
-import com.jasonhong.fx.main.event.Listener;
-import com.jasonhong.fx.main.event.TapPaneEvent;
 import com.jasonhong.fx.main.page.OutlinePage;
+import com.jasonhong.fx.main.page.home.sidebar.Sidebar;
 import com.jasonhong.fx.main.page.showcase.blueprints.BlueprintsPage;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.geometry.Side;
 import javafx.scene.control.Control;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 import java.util.HashMap;
 
+import static com.jasonhong.fx.main.layout.MainLayerTab.model;
+
+
 public  final class HomePage extends OutlinePage  {
 
-private TabPane tp = new TabPane();
+    private final Sidebar sidebar = new Sidebar(model);
+//    public static TabPane tp = new TabPane();
     public static final String NAME = "首页";
     HashMap<TabPane, Control> panel = new HashMap<TabPane, Control>();
 
@@ -36,46 +34,49 @@ private TabPane tp = new TabPane();
 //        addPageHeader();
 //        addSection("Playground", playground());//
 //        getChildren().add(playground());
-       var tab = new Tab();
-        tab.setText(this.getName());
-        tab.setContent(new BlueprintsPage());
-        tab.setClosable(false);
-        tp.getTabs().add(tab);
-        DefaultEventBus.getInstance().subscribe(TapPaneEvent.class,this::onTapPaneEvent);
-   getChildren().add(tp);
+//       var tab = new Tab();
+//        tab.setText(this.getName());
+        BorderPane bp = new BorderPane();
+        bp.setLeft(sidebar);
+        bp.setCenter(new BlueprintsPage());
+//        tab.setContent(bp);
+//        tab.setClosable(false);
+//        tp.getTabs().add(tab);
+//        DefaultEventBus.getInstance().subscribe(TapPaneEvent.class,this::onTapPaneEvent);
+        getChildren().add(bp);
     }
 
 
-    @Listener
-    private void onTapPaneEvent(TapPaneEvent event) {
-        if (event.getCotrol() instanceof Control) {
-            newTab((Control) event.getCotrol());
-        } else {
-            tp.getTabs().add(1,(Tab) event.getCotrol()
-            );
-            event.getCotrol();
-        }
-    }
+//    @Listener
+//    private void onTapPaneEvent(TapPaneEvent event) {
+//        if (event.getCotrol() instanceof Control) {
+//            newTab((Control) event.getCotrol());
+//        } else {
+//            tp.getTabs().add(1,(Tab) event.getCotrol()
+//            );
+//            event.getCotrol();
+//        }
+//    }
 
     private Side tabSide = Side.TOP;
     private boolean fullWidth = false;
-
-    private Pane newTab(Control control) {
-        var tabs = createTab(control);
-
-        var tabsLayer = new BorderPane();
-        tabsLayer.setTop(this);
-        tp.getTabs().addListener((ListChangeListener<Tab>) c ->
-                updateTabsWidth(tabsLayer, tp, fullWidth)
-        );
-        return tabsLayer;
 //
-//        var stack = new StackPane(tabsLayer);
-//        stack.getStyleClass().add(Styles.BORDERED);
-//        stack.setMinSize(600, 500);
-//        return new VBox( stack);
-
-    }
+//    private Pane newTab(Control control) {
+//        var tabs = createTab(control);
+//
+//        var tabsLayer = new BorderPane();
+//        tabsLayer.setTop(this);
+//        tp.getTabs().addListener((ListChangeListener<Tab>) c ->
+//                updateTabsWidth(tabsLayer, tp, fullWidth)
+//        );
+//        return tabsLayer;
+////
+////        var stack = new StackPane(tabsLayer);
+////        stack.getStyleClass().add(Styles.BORDERED);
+////        stack.setMinSize(600, 500);
+////        return new VBox( stack);
+//
+//    }
 
 
 
@@ -112,13 +113,13 @@ private TabPane tp = new TabPane();
         }
     }
 
-    public ObservableList<Tab> createTab(Control control) {
-        Tab tab = new Tab(control.getAccessibleText());
-        tab.setContent(control);
-        tp.getTabs().add(1, tab
-        );
-        return  tp.getTabs();
-    }
+//    public ObservableList<Tab> createTab(Control control) {
+//        Tab tab = new Tab(control.getAccessibleText());
+//        tab.setContent(control);
+//        tp.getTabs().add(1, tab
+//        );
+//        return  tp.getTabs();
+//    }
 
 
 }

@@ -2,8 +2,10 @@
 
 package com.jasonhong.fx.main.layout;
 
+import com.jasonhong.fx.main.browser.BrowserPage;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.NavEvent;
+import com.jasonhong.fx.main.event.NavReloadEvent;
 import com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.general.ThemePage;
@@ -34,11 +36,11 @@ public class MainModel {
         SOURCE_CODE
     }
 
-    NavTree.Item getTreeItemForPage(Class<? extends Page> pageClass) {
+    public NavTree.Item getTreeItemForPage(Class<? extends Page> pageClass) {
         return NAV_TREE.getOrDefault(pageClass, NAV_TREE.get(DEFAULT_PAGE));
     }
 
-    List<NavTree.Item> findPages(String filter) {
+    public List<NavTree.Item> findPages(String filter) {
         return NAV_TREE.values().stream()
             .filter(item -> item.getValue() != null && item.getValue().matches(filter))
             .toList();
@@ -47,6 +49,7 @@ public class MainModel {
     public MainModel() {
         DefaultEventBus.getInstance().subscribe(NavEvent.class, e -> navigate(e.getPage()));
     }
+
 
     ///////////////////////////////////////////////////////////////////////////
     // Properties                                                            //
@@ -74,26 +77,29 @@ public class MainModel {
     }
 
     private NavTree.Item createTree() {
-        var home = NavTree.Item.group("首页", new FontIcon(Material2OutlinedMZ.SPEED));
-        home.getChildren().setAll(
-                NAV_TREE.get(HomePage.class)
-        );
+//        var home = NavTree.Item.group("首页", new FontIcon(Material2OutlinedMZ.SPEED));
+//        home.getChildren().setAll(
+//                NAV_TREE.get(HomePage.class)
+//        );
         var general = NavTree.Item.group("工具箱", new FontIcon(Material2OutlinedMZ.SPEED));
         general.getChildren().setAll(
                 NAV_TREE.get(ImageToText.class),
                 NAV_TREE.get(com.jasonhong.fx.main.fxml.tts.App.class),
                 NAV_TREE.get(MusicPlayerPage.class)
         );
+        var other = NavTree.Item.group("其他", new FontIcon(Material2OutlinedMZ.PLACE));
+        other.getChildren().setAll(
+                NAV_TREE.get(BrowserPage.class)
+        );
         general.setExpanded(false);
         var setting = NavTree.Item.group("设置", new FontIcon(Material2OutlinedMZ.SPEED));
         setting.getChildren().setAll(
                 NAV_TREE.get(ThemePage.class)
-
         );
         general.setExpanded(false);
         var root = NavTree.Item.root();
         root.getChildren().setAll(
-                home,general,setting
+               general,other,setting
         );
 
         return root;
@@ -107,12 +113,14 @@ public class MainModel {
         var map = new HashMap<Class<? extends Page>, NavTree.Item>();
 
         // general
-        map.put(HomePage.class, NavTree.Item.page(HomePage.NAME, HomePage.class));
+//        map.put(HomePage.class, NavTree.Item.page(HomePage.NAME, HomePage.class));
         map.put(ThemePage.class, NavTree.Item.page(ThemePage.NAME, ThemePage.class));
         map.put(BlueprintsPage.class, NavTree.Item.page(BlueprintsPage.NAME, BlueprintsPage.class));
         map.put(com.jasonhong.fx.main.fxml.tts.App.class, NavTree.Item.page(com.jasonhong.fx.main.fxml.tts.App.NAME, com.jasonhong.fx.main.fxml.tts.App.class));
         map.put(ImageToText.class, NavTree.Item.page(ImageToText.NAME, ImageToText.class));
         map.put(MusicPlayerPage.class, NavTree.Item.page(MusicPlayerPage.NAME, MusicPlayerPage.class));
+        map.put(BrowserPage.class, NavTree.Item.page(BrowserPage.NAME, BrowserPage.class));
+
         return map;
     }
 
@@ -121,7 +129,16 @@ public class MainModel {
     ///////////////////////////////////////////////////////////////////////////
 
     public void navigate(Class<? extends Page> page) {
-        selectedPage.set(Objects.requireNonNull(page));
+        Objects.requireNonNull(page);
+       if( selectedPage.get() == page) {
+//           selectedPage.set(null);
+           NavReloadEvent event = new NavReloadEvent(page);
+           DefaultEventBus.getInstance().publish(event);
+       }
+        selectedPage.set(page);
+//        if( selectedPage.get()== page){
+//            selectedPage.set(null);
+//        }
         currentSubLayer.set(PAGE);
     }
 

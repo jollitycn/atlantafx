@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-record Nav(String title,
+public record Nav(String title,
            @Nullable Node graphic,
            @Nullable Class<? extends Page> pageClass,
            @Nullable List<String> searchKeywords) {

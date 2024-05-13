@@ -6,6 +6,7 @@ import atlantafx.base.theme.Styles;
 import com.jasonhong.core.common.Callback;
 import com.jasonhong.core.common.Result;
 import com.jasonhong.core.common.Status;
+import com.jasonhong.fx.main.browser.BrowserEvent;
 import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.ScreenCaptureEvent;
 import com.jasonhong.fx.main.event.TapPaneEvent;
@@ -15,6 +16,7 @@ import com.jasonhong.fx.main.util.ScreenCaptureApp;
 import com.jasonhong.ocr.TesseractOCR;
 import com.jasonhong.services.mq.tts.client.TextToSpeakMqttPublisher;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
@@ -32,15 +34,16 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import static com.jasonhong.fx.main.event.TapPaneEvent.Action.NEW_TAB;
 
 public class BrawserToolbar extends VBox {
-    private String url;
+
+    CustomTextField textField;
 public BrawserToolbar(String url){
 
-    // ~
-    var textField = new CustomTextField(url);
+    // ~ = new CustomTextField(url);
     textField.setPromptText("Search Doodle of type an URL");
     textField.setLeft(new FontIcon(Feather.LOCK));
     textField.setRight(new FontIcon(Feather.STAR));
@@ -60,10 +63,9 @@ public BrawserToolbar(String url){
 
 
     var dropdown = new MenuButton("", new FontIcon(Feather.MENU));
+
     dropdown.getItems().setAll(
-            new MenuItem("Action 1"),
-            new MenuItem("Action 2"),
-            new MenuItem("Action 3")
+            getDownload()
     );
     Button btnSnager=  iconButton(Feather.INBOX);
     btnSnager.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -90,6 +92,19 @@ public BrawserToolbar(String url){
     );
     getChildren().add(toolbar3);
 }
+
+    private MenuItem getDownload() {
+        var downlaod = new MenuItem("下载");
+        downlaod.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                BrowserEvent tp = new BrowserEvent(URI.create(textField.getText()));
+                tp.setType(BrowserEvent.EventType.DOWNLOAD);
+                DefaultEventBus.getInstance().publish(tp);
+            }
+        });
+        return downlaod;
+    }
 
     private void handleScreen(ScreenCaptureEvent screenCaptureEvent) {
         final File[] file = {null};

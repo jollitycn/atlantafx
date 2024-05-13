@@ -44,7 +44,8 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static com.jasonhong.fx.main.fxml.ocr.ImageToText.SUPPORTED_MEDIA_TYPES;
-import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
+//import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
+import static com.jasonhong.fx.main.layout.MainLayerTab.BOTTOM_STATE_BAR;
 import static com.jasonhong.fx.main.page.Page.*;
 import static javafx.collections.FXCollections.observableArrayList;
 //

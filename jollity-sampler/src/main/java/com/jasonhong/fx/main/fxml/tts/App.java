@@ -1,21 +1,24 @@
 package com.jasonhong.fx.main.fxml.tts;
 
 
+import com.jasonhong.fx.main.page.OutlinePage;
 import com.jasonhong.fx.main.page.Page;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class App extends Application implements Page {
+public class App   extends OutlinePage implements Page {
 public App(){
-
+//setContent(getRoot());
+this.getChildren().add(getRoot());
 }
     public Parent getRoot()  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
@@ -28,31 +31,31 @@ public App(){
         return root;
     }
 
-    @Override
-    public void start(Stage primaryStage)   {
-        // 加载FXML文件
-        Parent root =   getRoot();
-        Stage stage;
-        if(primaryStage==null){
-            stage = new Stage();
-            stage.initOwner(primaryStage);
-        }else{
-            stage  = primaryStage;
-        }
-
+//    @Override
+//    public void start(Stage primaryStage)   {
+//        // 加载FXML文件
+//        Parent root =   getRoot();
+//        Stage stage;
+//        if(primaryStage==null){
+//            stage = new Stage();
+//            stage.initOwner(primaryStage);
+//        }else{
+//            stage  = primaryStage;
+//        }
 //
-//        // 设置控制器（如果FXML文件中没有指定）
-//        MainController controller = loader.getController();
-//        primaryStage.setTitle("文字语音处理工具");
-//        Label label = new Label("Welcome to JavaFX!");
-////        StackPane root = new StackPane();
-////        root.getChildren().add(label);
-        // 创建一个新的Stage作为子窗口
-//        subStage.getIcons().add(new Image("file:path/to/your/icon.png")); // 可选：设置图标
-//        subStage.setScene(scene);
-        stage.setScene(new Scene(root, 300, 250));
-        stage.show();
-    }
+////
+////        // 设置控制器（如果FXML文件中没有指定）
+////        MainController controller = loader.getController();
+////        primaryStage.setTitle("文字语音处理工具");
+////        Label label = new Label("Welcome to JavaFX!");
+//////        StackPane root = new StackPane();
+//////        root.getChildren().add(label);
+//        // 创建一个新的Stage作为子窗口
+////        subStage.getIcons().add(new Image("file:path/to/your/icon.png")); // 可选：设置图标
+////        subStage.setScene(scene);
+//        stage.setScene(new Scene(root, 300, 250));
+//        stage.show();
+//    }
 
     public static final String NAME =  "文本转语音";
     @Override
@@ -62,7 +65,7 @@ public App(){
 
     @Override
     public Parent getView() {
-        return getRoot() ;
+        return this ;
     }
 
     @Override

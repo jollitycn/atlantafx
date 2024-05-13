@@ -27,7 +27,8 @@ public final class ApplicationWindow extends AnchorPane {
         var modalPane = new ModalPane();
         modalPane.setId(MAIN_MODAL_ID);
 
-        body.getChildren().setAll(modalPane, new MainLayer());
+//        body.getChildren().setAll(modalPane, new MainLayer());
+        body.getChildren().setAll(modalPane, new MainLayerTab());
         NodeUtils.setAnchors(body, Insets.EMPTY);
 
         getChildren().setAll(body);

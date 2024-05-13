@@ -1,6 +1,7 @@
 package com.jasonhong.fx.main.fxml.ocr;
 
 
+import com.jasonhong.fx.main.page.OutlinePage;
 import com.jasonhong.fx.main.page.Page;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -8,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,13 +18,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
 
-public class ImageToText extends Application implements Page {
+public class ImageToText   extends OutlinePage implements Page {
 
     public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("png","jpg","jpeg");
 
 
         public static final String NAME =  "图像识别";
-
+public ImageToText() {
+    getChildren().add(getRoot());
+}
     public Parent getRoot() {
         Parent root = null;
         try {
@@ -39,38 +44,38 @@ public class ImageToText extends Application implements Page {
 //            });
             ImageToTextController controller =  loader.getController();
             controller.initTable();
-            root.layout();
+//            root.layout();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return root;
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        // 加载FXML文件
-        Parent root =   getRoot();
-        Stage stage;
-        if(primaryStage==null){
-            stage = new Stage();
-            stage.initOwner(primaryStage);
-        }else{
-            stage  = primaryStage;
-        }
-
+//    @Override
+//    public void start(Stage primaryStage) throws IOException {
+//        // 加载FXML文件
+//        Parent root =   getRoot();
+//        Stage stage;
+//        if(primaryStage==null){
+//            stage = new Stage();
+//            stage.initOwner(primaryStage);
+//        }else{
+//            stage  = primaryStage;
+//        }
 //
-//        // 设置控制器（如果FXML文件中没有指定）
-//        MainController controller = loader.getController();
-//        primaryStage.setTitle("文字语音处理工具");
-//        Label label = new Label("Welcome to JavaFX!");
-////        StackPane root = new StackPane();
-////        root.getChildren().add(label);
-        // 创建一个新的Stage作为子窗口
-//        subStage.getIcons().add(new Image("file:path/to/your/icon.png")); // 可选：设置图标
-//        subStage.setScene(scene);
-        stage.setScene(new Scene(root, 300, 250));
-        stage.show();
-    }
+////
+////        // 设置控制器（如果FXML文件中没有指定）
+////        MainController controller = loader.getController();
+////        primaryStage.setTitle("文字语音处理工具");
+////        Label label = new Label("Welcome to JavaFX!");
+//////        StackPane root = new StackPane();
+//////        root.getChildren().add(label);
+//        // 创建一个新的Stage作为子窗口
+////        subStage.getIcons().add(new Image("file:path/to/your/icon.png")); // 可选：设置图标
+////        subStage.setScene(scene);
+//        stage.setScene(new Scene(root, 300, 250));
+//        stage.show();
+//    }
 
     @Override
     public String getName() {
@@ -79,7 +84,7 @@ public class ImageToText extends Application implements Page {
 
     @Override
     public Parent getView() {
-        return getRoot() ;
+        return this ;
     }
 
     @Override

@@ -25,7 +25,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static com.jasonhong.fx.main.fxml.tts.Constants.AUDIO_ARTIST;
-import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
+import static com.jasonhong.fx.main.layout.MainLayerTab.BOTTOM_STATE_BAR;
+//import static com.jasonhong.fx.main.layout.MainLayer.BOTTOM_STATE_BAR;
 
 
 public class  Controller {

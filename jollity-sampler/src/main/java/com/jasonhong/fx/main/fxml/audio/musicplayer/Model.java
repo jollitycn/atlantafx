@@ -102,7 +102,12 @@ final class Model {
     ///////////////////////////////////////////////////////////////////////////
 
     public void play(MediaFile mediaFile) {
-        currentTrack.set(Objects.requireNonNull(mediaFile));
+//        Objects.requireNonNull(mediaFile)
+        if (currentTrack.get() == mediaFile) {
+            currentTrack.set(null);
+        }
+            currentTrack.set(Objects.requireNonNull(mediaFile));
+
     }
 
     public void playPrevious() {

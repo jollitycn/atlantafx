@@ -1,11 +1,14 @@
 /* SPDX-License-Identifier: MIT */
 
-package com.jasonhong.fx.main.layout;
+package com.jasonhong.fx.main.page.home.sidebar;
 
 import atlantafx.base.controls.CustomTextField;
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
+import com.jasonhong.fx.main.layout.MainModel;
+import com.jasonhong.fx.main.layout.ModalDialog;
+import com.jasonhong.fx.main.layout.NavTree;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
