@@ -2,6 +2,7 @@ package com.jasonhong.fx.main.fxml.download;
 
 import atlantafx.base.theme.Tweaks;
 import com.jasonhong.fx.main.page.Page;
+import com.jasonhong.fx.main.page.components.progressbar.ColoredProgressBar;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -51,16 +53,20 @@ public class FileDownloadPage extends StackPane implements Page {
     private ListView<FileDownloadTask> listView  = new ListView<>();
 public FileDownloadPage() {
     // 创建布局和控件
-    VBox root = new VBox(10);
+    StackPane root = new StackPane();
     root.setAlignment(Pos.CENTER);
-    root.setPadding(new Insets(10));
+//    root.setPadding(new Insets(10));
 
     listView = new ListView<>(tasks);
 //    listView.setItems(tasks);
     listView.getStyleClass().add(Tweaks.EDGE_TO_EDGE);
     listView.setCellFactory(param -> new MediaCell());
+    listView.setMaxHeight(MAX_VALUE);
+    listView.setMaxWidth(MAX_VALUE);
     root.getChildren().add(listView);
     getChildren().add(root);
+    this.setMaxHeight(MAX_VALUE);
+    this.setMaxWidth(MAX_VALUE);
 }
 
     private static class MediaCell extends ListCell<FileDownloadTask> {
@@ -72,7 +78,7 @@ public FileDownloadPage() {
         private final Rectangle coverImage;
         private final Label titleLabel;
         private final Label artistLabel;
-        private final ProgressBar progessBar;
+        private final ColoredProgressBar progressBar;
         private final FontIcon playMark;
         private final FontIcon btnCancel;
         private final FontIcon btnOpenFolder;
@@ -91,9 +97,12 @@ public FileDownloadPage() {
             artistLabel = new Label();
             artistLabel.setMaxWidth(MAX_VALUE);
 
-            progessBar = new ProgressBar();
-            VBox.setVgrow(progessBar, ALWAYS);
-            var titleBox = new VBox(5, titleLabel, progessBar, artistLabel);
+            progressBar = new ColoredProgressBar();
+            progressBar.setMaxWidth(MAX_VALUE);
+//            progessBar.setMinWidth(500);
+//            HBox mainBox = new HBox(10, progressBar); // 10是间距
+//            HBox.setHgrow(progressBar, Priority.ALWAYS);
+            var titleBox = new VBox(5, titleLabel, progressBar, artistLabel);
             titleBox.setAlignment(CENTER_LEFT);
             HBox.setHgrow(titleBox, ALWAYS);
 
@@ -105,7 +114,7 @@ public FileDownloadPage() {
                         if (getItem() != null) {
 //                    model.play(getItem());
                             getItem().downloadFile();
-                            progessBar.setVisible(true);
+                            progressBar.setVisible(true);
                             btnCancel.setVisible(true);
                             btnOpenFolder.setVisible(false);
                             playMark.setVisible(false);
@@ -173,20 +182,20 @@ public FileDownloadPage() {
 //                artistLabel.setText(null);
             } else {
                 setGraphic(root);
-                titleLabel.textProperty().bind(mediaFile.fileName);
+                titleLabel.textProperty().bind(mediaFile.fileDisplayName);
                 artistLabel.textProperty().bind(mediaFile.statusLabel);
-                progessBar.progressProperty().addListener(new ChangeListener<Number>() {
+                progressBar.progressProperty().addListener(new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        if (progessBar.progressProperty().getValue() == 1.0) {
-                            progessBar.setVisible(false);
+                        if (progressBar.progressProperty().getValue() == 1.0) {
+                            progressBar.setVisible(false);
                             playMark.setVisible(false);
                             btnCancel.setVisible(false);
                             btnOpenFolder.setVisible(true);
                         }
                     }
                 });
-                progessBar.progressProperty().bind(mediaFile.progressBar.get().progressProperty());
+                progressBar.progressProperty().bind(mediaFile.progressBar.get().progressProperty());
             }
         }
     }

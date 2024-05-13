@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import static com.jasonhong.fx.main.event.TapPaneEvent.Action.NEW_TAB;
+import static java.lang.Double.MAX_VALUE;
 
 public class BrawserToolbar extends VBox {
 
@@ -47,6 +48,7 @@ public BrawserToolbar(String url){
     textField.setPromptText("Search Doodle of type an URL");
     textField.setLeft(new FontIcon(Feather.LOCK));
     textField.setRight(new FontIcon(Feather.STAR));
+    textField.setMaxWidth(MAX_VALUE);
     HBox.setHgrow(textField, Priority.ALWAYS);
     textField.setOnKeyPressed(event -> {
         if (event.getCode().equals(KeyCode.ENTER)) {

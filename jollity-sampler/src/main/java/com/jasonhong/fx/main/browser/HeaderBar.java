@@ -1,13 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 
-package com.jasonhong.fx.main.layout;
+package com.jasonhong.fx.main.browser;
 
 import com.jasonhong.fx.main.page.components.toolbar.BrawserToolbar;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 
 public final class HeaderBar extends HBox {

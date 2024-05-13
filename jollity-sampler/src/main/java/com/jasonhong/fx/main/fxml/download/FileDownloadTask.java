@@ -29,6 +29,7 @@ public class FileDownloadTask extends Pane {
     //    private Label statusLabel;
     public final ReadOnlyObjectWrapper<String> statusLabel = new ReadOnlyObjectWrapper<>();
     public final ReadOnlyObjectWrapper<String> fileName = new ReadOnlyObjectWrapper<>();
+    public final ReadOnlyObjectWrapper<String> fileDisplayName = new ReadOnlyObjectWrapper<>();
     public final ReadOnlyObjectWrapper<ProgressBar> progressBar = new ReadOnlyObjectWrapper<>();
 
     Task<Void> downloadTask;
@@ -42,6 +43,7 @@ public class FileDownloadTask extends Pane {
 //        statusLabel = new Label();
         statusLabel.set("等待下载...");
         fileName.set(this.url.substring(this.url.lastIndexOf("/") + 1));
+
 //        Button startDownloadButton = new Button("开始下载");
 //        startDownloadButton.setOnAction(e -> downloadFile( ));
 //        getChildren().addAll(progressBar, statusLabel, startDownloadButton);
@@ -70,6 +72,7 @@ public class FileDownloadTask extends Pane {
             statusLabel.set("文件选择取消");
             return;
         }
+        fileDisplayName.set(fileName.get()+" -> "+selectedFile.get().getName());
         downloadTask=  new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -108,12 +111,12 @@ public class FileDownloadTask extends Pane {
                         double percentage = (100.0 * totalBytesRead) / fileLength;
                         endTime =  System.currentTimeMillis();
                         DecimalFormat decimalFormat = new DecimalFormat("#.00"); // 保留两位小数，如果需要一位则改为"#.0"
-                        String message = "正在下载："  +totalBytesRead+ "/"+fileLength+" - "+ decimalFormat.format(percentage) + "% - " + Duration.ofMillis(endTime-startTime).getSeconds() +"s";
+                        String message = "正在下载："  +totalBytesRead/1024+ "/"+fileLength/1024+" - "+ decimalFormat.format(percentage) + "% - " + Duration.ofMillis(endTime-startTime).getSeconds() +"s - " +  fileLength/1024/Duration.ofMillis(endTime-startTime).getSeconds() +" kb/s";
                         updateMessage(message);
                         updateProgress(totalBytesRead, fileLength);
                     }
 
-                    updateMessage("下载完成:" + fileLength +" - " +  Duration.ofMillis(endTime-startTime).getSeconds());
+//                    updateMessage("完成:" + fileLength/1024 +"KB  - " +  Duration.ofMillis(endTime-startTime).getSeconds() +"s");
 
                 }
                 return null;
@@ -128,7 +131,7 @@ public class FileDownloadTask extends Pane {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                Platform.runLater(() -> statusLabel.set("下载成功:" + fileLength +" - " +  Duration.ofMillis(endTime-startTime).getSeconds()));
+                Platform.runLater(() -> statusLabel.set("完成:" + fileLength/1024 +"KB - " +  Duration.ofMillis(endTime-startTime).getSeconds()));
             }
 
             @Override
