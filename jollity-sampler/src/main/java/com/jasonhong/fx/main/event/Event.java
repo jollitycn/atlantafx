@@ -7,7 +7,8 @@ import java.util.UUID;
 public abstract class Event {
 
     protected final UUID id = UUID.randomUUID();
-
+    protected Event() {
+    }
     protected Event(Object object) {
     }
 

@@ -37,8 +37,8 @@ import static java.lang.Double.MAX_VALUE;
 public class FileDownloadApp extends Application {
 
     public static final String NAME =  "文件下载";
-    private ProgressBar progressBar;
-    private Label statusLabel;
+//    private ProgressBar progressBar;
+//    private Label statusLabel;
     FileDownloadPage page;
     @Override
     public void start(Stage primaryStage) {
@@ -47,8 +47,8 @@ public class FileDownloadApp extends Application {
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(5));
 
-
-        TextField url = new TextField("https://tor.zilog.es/dist/torbrowser/13.0.14/tor-browser-windows-x86_64-portable-13.0.14.exe");
+String strUrl = "https://tor.zilog.es/dist/torbrowser/13.0.14/tor-browser-windows-x86_64-portable-13.0.14.exe";
+        TextField url = new TextField(strUrl);
         Button startDownloadButton = new Button("开始下载");
         startDownloadButton.setOnAction(e -> downloadFile( url.getText()));
 //        FileDownloadPage page= new FileDownloadPage();

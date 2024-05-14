@@ -131,7 +131,7 @@ public class FileDownloadTask extends Pane {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                Platform.runLater(() -> statusLabel.set("完成:" + fileLength/1024 +"KB - " +  Duration.ofMillis(endTime-startTime).getSeconds()));
+                Platform.runLater(() -> statusLabel.set("完成:" + fileLength/1024 +"KB - " +  Duration.ofMillis(endTime-startTime).getSeconds()+"s"));
             }
 
             @Override

@@ -7,6 +7,7 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.NavEvent;
 import com.jasonhong.fx.main.event.NavReloadEvent;
 import com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage;
+import com.jasonhong.fx.main.fxml.audio.record.AudioRecorderPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.general.ThemePage;
 import com.jasonhong.fx.main.page.home.HomePage;
@@ -87,6 +88,10 @@ public class MainModel {
                 NAV_TREE.get(com.jasonhong.fx.main.fxml.tts.App.class),
                 NAV_TREE.get(MusicPlayerPage.class)
         );
+        var audio = NavTree.Item.group("语音", new FontIcon(Material2OutlinedMZ.SPEAKER));
+        audio.getChildren().setAll(
+                NAV_TREE.get(AudioRecorderPage.class)
+        );
         var other = NavTree.Item.group("其他", new FontIcon(Material2OutlinedMZ.PLACE));
         other.getChildren().setAll(
                 NAV_TREE.get(BrowserPage.class)
@@ -99,7 +104,7 @@ public class MainModel {
         general.setExpanded(false);
         var root = NavTree.Item.root();
         root.getChildren().setAll(
-               general,other,setting
+               general,audio,other,setting
         );
 
         return root;
@@ -120,6 +125,7 @@ public class MainModel {
         map.put(ImageToText.class, NavTree.Item.page(ImageToText.NAME, ImageToText.class));
         map.put(MusicPlayerPage.class, NavTree.Item.page(MusicPlayerPage.NAME, MusicPlayerPage.class));
         map.put(BrowserPage.class, NavTree.Item.page(BrowserPage.NAME, BrowserPage.class));
+        map.put(AudioRecorderPage.class, NavTree.Item.page(AudioRecorderPage.NAME, AudioRecorderPage.class));
 
         return map;
     }

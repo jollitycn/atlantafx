@@ -16,7 +16,7 @@ import static com.jasonhong.fx.main.fxml.audio.musicplayer.Utils.copyImage;
 
 
 @SuppressWarnings("StringOperationCanBeSimplified")
-record MediaFile(Path path) {
+public record MediaFile(Path path) {
 
     private static final Map<String, Metadata> METADATA_CACHE = new HashMap<>();
 
@@ -37,11 +37,12 @@ record MediaFile(Path path) {
                 var image = getTag(metadata, "image", Image.class, null);
                 // clone everything to make sure media player will be garbage collected
                 return new Metadata(
-                    new String(getTag(metadata, "title", String.class, Metadata.NO_TITLE)),
-                    image != null ? copyImage(image) : null,
-                    new String(getTag(metadata, "artist", String.class, Metadata.NO_ARTIST)),
-                    new String(getTag(metadata, "album", String.class, Metadata.NO_ALBUM)),
-                    media.getDuration().toMillis()
+                        new String(getTag(metadata, "title", String.class, Metadata.NO_TITLE)),
+                        image != null ? copyImage(image) : null,
+                        new String(getTag(metadata, "artist", String.class, Metadata.NO_ARTIST)),
+                        new String(getTag(metadata, "album", String.class, Metadata.NO_ALBUM)),
+                        new String(String.valueOf(path.getFileName())),
+                        media.getDuration().toMillis()
                 );
             }));
 
@@ -60,18 +61,19 @@ record MediaFile(Path path) {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    record Metadata(String title, Image image, String artist, String album, double duration) {
+    public record Metadata(String title, Image image, String artist, String album, String fileName, double duration) {
 
-        static final Image NO_IMAGE = new Image(
-            Resources.getResourceAsStream("images/no-image.png"), 150, 150, true, false
+        public   static final Image NO_IMAGE = new Image(
+                Resources.getResourceAsStream("images/no-image.png"), 150, 150, true, false
         );
 
-        static final Image NO_IMAGE_ALT = new Image(
-            Resources.getResourceAsStream("images/papirus/mimetypes/audio-mp3.png"), 150, 150, true, false
+        public  static final Image NO_IMAGE_ALT = new Image(
+                Resources.getResourceAsStream("images/papirus/mimetypes/audio-mp3.png"), 150, 150, true, false
         );
 
-        static final String NO_TITLE = "Unknown title";
-        static final String NO_ARTIST = "Unknown artist";
-        static final String NO_ALBUM = "Unknown album";
+        public static final String NO_TITLE = "Unknown title";
+        public static final String NO_ARTIST = "Unknown artist";
+        public static final String NO_ALBUM = "Unknown album";
+//        static final String NO_FILE_NAME ="Unknown file";
     }
 }

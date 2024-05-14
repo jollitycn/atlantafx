@@ -223,7 +223,7 @@ public class ImageToTextController {
             info.setSourceFile(file);
             imageFiles.add(info);
             toConvertFiles.add(file);
-            new RecentFilesManager("image-to-text").addRecentFile(file);
+            new RecentFilesManager(RecentFilesManager.RecentFileType.IMAGE).addRecentFile(file);
         }
 
         imageListView.getItems().setAll(imageFiles);

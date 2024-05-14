@@ -41,13 +41,13 @@ public class MainLayerTab extends BorderPane {
 
     private CodeViewer codeViewer;
     private StackPane codeViewerWrapper;
-    private  Page DEFAULT_PAGE_INSTANCE;
+//    private  Page DEFAULT_PAGE_INSTANCE;
     public MainLayerTab() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         super();
 
         createView();
         initListeners();
-        DEFAULT_PAGE_INSTANCE =MainModel.DEFAULT_PAGE.getDeclaredConstructor().newInstance();
+//        DEFAULT_PAGE_INSTANCE =MainModel.DEFAULT_PAGE.getDeclaredConstructor().newInstance();
         model.navigate(MainModel.DEFAULT_PAGE);
 
         // keyboard navigation won't work without focus
@@ -161,9 +161,7 @@ public class MainLayerTab extends BorderPane {
                 .filter(c -> c.getContent() instanceof Page && c.getText().equals(nextPage.getName()) )
                     .findFirst()
                 .orElse(null);
-//            if(  nextPage.getClass()== MainModel.DEFAULT_PAGE) {
-//                nextPage = DEFAULT_PAGE_INSTANCE;
-//            }
+
 
             if(prevPage!=null) {
                 var transition = new FadeTransition(Duration.millis(PAGE_TRANSITION_DURATION), nextPage.getView());
@@ -204,6 +202,9 @@ public class MainLayerTab extends BorderPane {
             tab.setText(nextPage.getName());
             tab.setContent(nextPage.getView());
             subLayerPane.getTabs().add(tab);
+            if(nextPage.getClass().equals(MainModel.DEFAULT_PAGE)){
+                tab.setClosable(false);
+            }
 
 //                subLayerPane.getTabs().remove(prevPage.getContent());
 

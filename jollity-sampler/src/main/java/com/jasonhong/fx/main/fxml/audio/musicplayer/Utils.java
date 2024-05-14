@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-final class Utils {
+public final class Utils {
 
     public static WritableImage copyImage(Image source) {
         int height = (int) source.getHeight();

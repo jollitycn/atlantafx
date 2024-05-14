@@ -193,7 +193,7 @@ public final class TreeTableViewPage extends OutlinePage {
         // == HEADER ==
 
         var header = new HBox(createPropertiesMenu(treeTable));
-        header.setAlignment(Pos.CENTER_LEFT);
+        header.setAlignment(Pos.CENTER_RIGHT);
 
         // ~
 

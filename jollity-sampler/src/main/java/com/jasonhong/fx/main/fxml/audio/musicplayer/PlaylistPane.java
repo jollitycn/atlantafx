@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.util.Objects;
 import static atlantafx.base.theme.Styles.*;
 import static com.jasonhong.fx.main.fxml.audio.musicplayer.MediaFile.Metadata.NO_IMAGE_ALT;
 import static com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage.SUPPORTED_MEDIA_TYPES;
+import static com.jasonhong.fx.main.util.DialogUtil.openAudioDailog;
 import static java.lang.Double.MAX_VALUE;
 import static javafx.geometry.Pos.CENTER_LEFT;
 import static javafx.scene.layout.Priority.ALWAYS;
@@ -110,16 +112,8 @@ final class PlaylistPane extends VBox {
         });
 
         addButton.setOnAction(e -> {
-            var extensions = SUPPORTED_MEDIA_TYPES.stream().map(s -> "*." + s).toList();
-            var fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().addAll(new ExtensionFilter(
-                "MP3 files (" + String.join(", ", extensions) + ")",
-                extensions
-            ));
-            List<File> files = fileChooser.showOpenMultipleDialog(getScene().getWindow());
-            if (files == null || files.isEmpty()) {
-                return;
-            }
+            List<File> files = openAudioDailog(getScene(), SUPPORTED_MEDIA_TYPES);
+            if (files == null) return;
 
             loadProgress.setVisible(true);
             final Task<Void> task = new Task<>() {
@@ -142,6 +136,7 @@ final class PlaylistPane extends VBox {
             new Thread(task).start();
         });
     }
+
 
     ///////////////////////////////////////////////////////////////////////////
 

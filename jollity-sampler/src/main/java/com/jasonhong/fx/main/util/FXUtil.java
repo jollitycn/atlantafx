@@ -1,12 +1,15 @@
 package com.jasonhong.fx.main.util;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class FXUtil {
 
@@ -24,16 +27,17 @@ public class FXUtil {
         alert.showAndWait();
     }
 
-        public static Image loadImageFromFile(File file) {
-            try {
-                return new Image(file.toURI().toString());
-            } catch (IllegalArgumentException e) {
-                // 文件可能不存在或无法读取，处理异常
-                e.printStackTrace();
-                return null;
-            }
+    public static Image loadImageFromFile(File file) {
+        try {
+            return new Image(file.toURI().toString());
+        } catch (IllegalArgumentException e) {
+            // 文件可能不存在或无法读取，处理异常
+            e.printStackTrace();
+            return null;
         }
-        // 如果你需要BufferedImage（例如，用于更复杂的图像处理），可以这样返回：
+    }
+
+    // 如果你需要BufferedImage（例如，用于更复杂的图像处理），可以这样返回：
     public static BufferedImage loadBufferedImageFromFile(File file) {
         try {
             return ImageIO.read(file);
@@ -42,5 +46,19 @@ public class FXUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Optional<?> show(Dialog<?> alert, Scene scene) {
+        // copy customized styles, like changed accent color etc
+        try {
+            for (var pc : scene.getRoot().getPseudoClassStates()) {
+                alert.getDialogPane().pseudoClassStateChanged(pc, true);
+            }
+            alert.getDialogPane().getStylesheets().addAll(scene.getRoot().getStylesheets());
+        } catch (Exception ignored) {
+            // yes, ignored
+        }
+
+        return alert.showAndWait();
     }
 }

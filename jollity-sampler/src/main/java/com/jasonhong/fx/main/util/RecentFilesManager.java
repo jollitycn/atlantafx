@@ -1,5 +1,7 @@
 package com.jasonhong.fx.main.util;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,14 +9,46 @@ import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 public class RecentFilesManager {
+    public enum RecentFileType{
+        ADUIO,
+        TEXT,
+        IMAGE, DIALOG,
+    }
+    private     String PREF_KEY_PREFIX = "recentFile_";
+    private     int MAX_RECENT_FILES = 30; // 最大历史记录数量
+    private static Preferences prefs = Preferences.userNodeForPackage(RecentFilesManager.class);
+    private     String CONFIG_FILE = "recent_files.config"; // 配置文件名称
+    public RecentFilesManager(RecentFileType type,int size) {
+        if (size != 0) {
+            MAX_RECENT_FILES = size;
+        }PREF_KEY_PREFIX = PREF_KEY_PREFIX  + type +"_";
+        CONFIG_FILE = "data/config/recent_files_" + type + ".config";
+        try {
+            FileUtils.createParentDirectories(new File(CONFIG_FILE));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+       loadRecentFiles();
+    }
 
-    private static final String PREF_KEY_PREFIX = "recentFile_";
-    private static final int MAX_RECENT_FILES = 10; // 最大历史记录数量  
-    private Preferences prefs;
-    private static final String CONFIG_FILE = "recent_files.config"; // 配置文件名称
+    public RecentFilesManager(RecentFileType type ) {
+        PREF_KEY_PREFIX = PREF_KEY_PREFIX   + type  +"_";
+        CONFIG_FILE = "data/config/recent_files_" + type + ".config";
+//        prefs = Preferences.userNodeForPackage(RecentFilesManager.class);
+        try {
+            FileUtils.createParentDirectories(new File(CONFIG_FILE));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-    public RecentFilesManager(String appName) {
-        prefs = Preferences.userNodeForPackage(RecentFilesManager.class);
+      loadRecentFiles();
+    }
+
+    public void addRecentFiles(List<File> files) {
+        for (File file: files){
+            addRecentFile( file);
+        }
+
     }
 
     public void addRecentFile(File file)   {
@@ -24,23 +58,23 @@ public class RecentFilesManager {
         // 移除已存在的条目（如果有）  
         removeRecentFile(file);
 
-        // 将新文件添加到列表的开头  
+        // 将新文件添加到列表的开头
         List<String> files = getRecentFilesList();
         files.add(0, file.getAbsolutePath());
 
-        // 如果列表太长，则移除最后一个条目  
+        // 如果列表太长，则移除最后一个条目
         if (files.size() > MAX_RECENT_FILES) {
             files.remove(MAX_RECENT_FILES - 1);
         }
 
-        // 更新首选项  
+        // 更新首选项
         int i = 0;
         for (String filePath : files) {
             prefs.put(PREF_KEY_PREFIX + i, filePath);
             i++;
         }
 
-        // 清除剩余的旧条目（如果有）  
+//        // 清除剩余的旧条目（如果有）
         String[] keys = null;
         try {
             keys = prefs.keys();
@@ -49,8 +83,8 @@ public class RecentFilesManager {
         }
         if(keys!=null) {
             for (String key : keys) {
-//            String key = prefs.keys().nextElement();  
-                if (!key.startsWith(PREF_KEY_PREFIX) || Integer.parseInt(key.substring(PREF_KEY_PREFIX.length())) >= files.size()) {
+//            String key = prefs.keys().nextElement();
+                if (key.startsWith(PREF_KEY_PREFIX) && Integer.parseInt(key.substring(PREF_KEY_PREFIX.length())) >= files.size()) {
                     prefs.remove(key);
                 }
             }
@@ -62,27 +96,28 @@ public class RecentFilesManager {
     // 保存最近文件列表到配置文件
     private void saveRecentFiles() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
-            String[] keys = prefs.keys();
+//            String[] keys = prefs.keys();
             for (int i = 0; prefs.get(PREF_KEY_PREFIX + i, null) != null; i++) {
+                System.out.println("write config:" + PREF_KEY_PREFIX  + " with "+ prefs.get(PREF_KEY_PREFIX + i, ""));
                 writer.write(prefs.get(PREF_KEY_PREFIX + i, ""));writer.newLine();
             }
         } catch (IOException e) {
             // 处理文件保存错误
             e.printStackTrace();
-        } catch (BackingStoreException e) {
-            throw new RuntimeException(e);
         }
+//        } catch (BackingStoreException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public List<File> getRecentFiles() {
-        List<String> files = getRecentFilesList();
         List<File> fileList = new ArrayList<>();
-        for (String filePath : files) {
-            fileList.add(new File(filePath));
+        for (int i = 0; prefs.get(PREF_KEY_PREFIX + i, null) != null; i++) {
+            fileList.add(new File(prefs.get(PREF_KEY_PREFIX + i, null)));
         }
         return fileList;
     }
-
+//
     private List<String> getRecentFilesList() {
         List<String> files = new ArrayList<>();
         for (int i = 0; prefs.get(PREF_KEY_PREFIX + i, null) != null; i++) {
@@ -91,8 +126,8 @@ public class RecentFilesManager {
         return files;
     }
 
-    private void removeRecentFile(File file)   {
-        if(file!=null) {
+    private void removeRecentFile(File file) {
+        if (file != null) {
             List<String> files = getRecentFilesList();
             files.remove(file.getAbsolutePath());
             // 更新首选项以反映更改
@@ -113,7 +148,7 @@ public class RecentFilesManager {
 
             if (keys != null) {
                 for (String key : keys) {
-                    if (!key.startsWith(PREF_KEY_PREFIX) || !isValidKeyIndex(key, files.size())) {
+                    if (key.startsWith(PREF_KEY_PREFIX) && !isValidKeyIndex(key, files.size())) {
                         prefs.remove(key);
                     }
                 }
@@ -144,18 +179,8 @@ public class RecentFilesManager {
                 addRecentFile(new File(line));
                 // 这里需要解析每一行来创建 RecentFile 对象
                 // 假设每行包含文件路径和最后访问时间，用逗号分隔
-//                String[] parts = line.split(",");
-//                if (parts.length == 2) {
-//                    RecentFile file = new RecentFile();
-//                    file.setFilePath(parts[0]);
-//                    file.setLastAccessTime(Long.parseLong(parts[1]));
-//                    recentFiles.add(file);
-//
-//                    // 如果超过最大数量，移除最旧的文件
-//                    if (recentFiles.size() > MAX_FILES) {
-//                        recentFiles.remove(0);
-//                    }
-//                }
+                String[] parts = line.split(",");
+
             }
         } catch (FileNotFoundException e) {
 //            FileUtils
@@ -171,8 +196,8 @@ public class RecentFilesManager {
 
     public static void main(String[] args) throws BackingStoreException {
 
-        RecentFilesManager manager = new RecentFilesManager("MyApp");
-        manager.loadRecentFiles(); // 加载最近文件列表
+        RecentFilesManager manager = new RecentFilesManager(RecentFileType.TEXT);
+//        manager.loadRecentFiles(); // 加载最近文件列表
         manager.addRecentFile(new File("/path/to/file1.txt"));
         manager.addRecentFile(new File("/path/to/file2.txt"));
         List<File> recentFiles = manager.getRecentFiles();

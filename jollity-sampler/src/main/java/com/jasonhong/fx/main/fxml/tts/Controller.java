@@ -237,7 +237,7 @@ Platform.runLater(()->{
     }
 
     public void handleOpenRecently(ActionEvent actionEvent) {
-        List<File> recentFiles = new RecentFilesManager("tts").getRecentFiles();
+        List<File> recentFiles = new RecentFilesManager(RecentFilesManager.RecentFileType.TEXT).getRecentFiles();
         recentMenu.getItems().clear();
         for (File fileName : recentFiles) { // 假设 recentFiles 是一个包含最近打开文件名的列表
             MenuItem menuItem = new MenuItem(fileName.getPath());

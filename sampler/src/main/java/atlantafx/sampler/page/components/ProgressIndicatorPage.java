@@ -273,20 +273,22 @@ public final class ProgressIndicatorPage extends OutlinePage {
 
     private ExampleBox colorChangeExample() {
         var dataClass = """
-            .example:success .progress-bar {
+             .progress-bar:success {
                  -color-progress-bar-fill: -color-success-emphasis;
              }
-             .example:danger  .progress-bar {
+             .progress-bar:danger {
                  -color-progress-bar-fill: -color-danger-emphasis;
              }
-             .example:success .label,
-             .example:danger  .label {
+             .label:success,
+             .label:danger {
                  -fx-text-fill: -color-fg-emphasis;
              }""";
 
         //snippet_6:start
         var bar = new ProgressBar(0);
-        bar.getStyleClass().add(Styles.LARGE);
+//        bar.getStyleClass().add(Styles.LARGE);
+//        bar.getStyleClass().add("example");
+        bar.setStyle( "-color-progress-bar-fill: -color-danger-emphasis");
         bar.setPrefWidth(300);
         bar.setMaxWidth(300);
 
@@ -315,7 +317,7 @@ public final class ProgressIndicatorPage extends OutlinePage {
         // .example:danger  .label {
         //     -fx-text-fill: -color-fg-emphasis;
         // }
-        content.getStylesheets().add(Styles.toDataURI(dataClass));
+//        content.getStylesheets().add(Styles.toDataURI(dataClass));
 
         bar.progressProperty().addListener((obs, old, val) -> {
             if (val == null) {
@@ -323,9 +325,9 @@ public final class ProgressIndicatorPage extends OutlinePage {
             }
 
             if (val.floatValue() > 0.80) {
-                barStack.pseudoClassStateChanged(Styles.STATE_DANGER, true);
+                bar.pseudoClassStateChanged(Styles.STATE_DANGER, true);
             } else if (val.floatValue() > 0.47) {
-                barStack.pseudoClassStateChanged(Styles.STATE_SUCCESS, true);
+                bar.pseudoClassStateChanged(Styles.STATE_SUCCESS, true);
             }
         });
 
@@ -351,8 +353,8 @@ public final class ProgressIndicatorPage extends OutlinePage {
                 bar.setProgress(0);
                 barText.setText(null);
 
-                barStack.pseudoClassStateChanged(Styles.STATE_SUCCESS, false);
-                barStack.pseudoClassStateChanged(Styles.STATE_DANGER, false);
+                bar.pseudoClassStateChanged(Styles.STATE_SUCCESS, false);
+                bar.pseudoClassStateChanged(Styles.STATE_DANGER, false);
             });
 
             bar.progressProperty().bind(task.progressProperty());
