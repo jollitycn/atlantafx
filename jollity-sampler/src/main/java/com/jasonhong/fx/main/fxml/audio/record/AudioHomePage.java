@@ -33,7 +33,7 @@ import java.util.Set;
 
 import static com.jasonhong.fx.main.util.DialogUtil.openAudioDailog;
 
-public class AudioRecorderHomePage extends CommonPage {
+public class AudioHomePage extends CommonPage {
 
     public static final String NAME = "主页";
     public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3","m4a","wav");
@@ -41,7 +41,7 @@ public class AudioRecorderHomePage extends CommonPage {
     GridPane gridPane = new GridPane();
     RecentFilesManager recentFilesManager = new RecentFilesManager(RecentFilesManager.RecentFileType.ADUIO, 25);
 //    List<File> files;
-    public AudioRecorderHomePage() {
+    public AudioHomePage() {
         super();
 
 

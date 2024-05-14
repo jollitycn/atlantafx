@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jasonhong.audioPlayer.component.smart.smartHome.ClockController"
+      alignment="CENTER" spacing="10" fillWidth="false" xmlns="http://javafx.com/javafx/8.0.171"
+      prefWidth="300"  prefHeight="200">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <Label fx:id="dateLabel" font="20px Serif" text="Date: "/>
+    <Label fx:id="timeLabel" font="20px Serif" text="Time: "/>
+    <Label fx:id="tempHumidityLabel" font="20px Serif" text="Temp/Humidity: "/>
+</VBox>

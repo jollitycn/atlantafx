@@ -1,9 +1,16 @@
 package com.jasonhong.fx.main.util;
 
+import atlantafx.base.theme.Styles;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,7 +19,56 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class FXUtil {
+    public  static  void placeStageAtBottom(Stage stage) {
+        // 获取主屏幕
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
 
+        // 计算窗口的x和y坐标，使窗口的底部与屏幕的底部对齐
+        double x = (bounds.getMaxX() - stage.getWidth()) / 2; // 居中显示
+        double y = bounds.getMinY() + bounds.getHeight() - stage.getHeight(); // 底部对齐
+
+        // 将窗口移动到指定位置
+        stage.setX(x);
+        stage.setY(y);
+    }
+
+    public static void placeStageAtCenter(Stage stage) { // 获取主屏幕
+        // 获取主屏幕
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        // 计算窗口的x和y坐标，使窗口居中显示
+        double x = (bounds.getMinX() + (bounds.getMaxX() - bounds.getMinX()) - stage.getWidth()) / 2;
+        double y = (bounds.getMinY() + (bounds.getMaxY() - bounds.getMinY()) - stage.getHeight()) / 2;
+
+        // 将窗口移动到指定位置
+        stage.setX(x);
+        stage.setY(y);
+
+    }
+
+    public static void placeStageAtRight(Stage stage) {
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        // 计算窗口的x和y坐标，使窗口的底部与屏幕的底部对齐
+        double x = bounds.getMaxX() - stage.getWidth();
+        double y = (bounds.getMinY() + stage.getHeight())/ 2; // 底部对齐
+
+        // 将窗口移动到指定位置
+        stage.setX(x);
+        stage.setY(y);
+    }
+    public static Button iconButton(Ikon icon) {
+        var btn = new Button(null);
+        if (icon != null) {
+            btn.setGraphic(new FontIcon(icon));
+        }
+        btn.getStyleClass().addAll(Styles.BUTTON_ICON);
+
+        return btn;
+    }
     public static void showErrorAlert(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

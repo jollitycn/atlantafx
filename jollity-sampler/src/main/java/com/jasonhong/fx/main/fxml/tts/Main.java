@@ -1,15 +1,6 @@
 package com.jasonhong.fx.main.fxml.tts;
 
 //import com.jasonhong.media.audio.AudioTagWriter;
-import com.jasonhong.services.mq.tts.client.TextToSpeakInfo;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.persistence.tools.file.FileUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import static com.jasonhong.fx.main.fxml.tts.Constants.AUDIO_ARTIST;
 
 public class Main {
 //    public static void main(String [] args){try {

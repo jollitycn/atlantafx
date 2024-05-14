@@ -1,113 +1,88 @@
 package com.jasonhong.fx.main.fxml.audio.record;
 
-import atlantafx.base.controls.ModalPane;
-import com.jasonhong.fx.main.event.DefaultEventBus;
-import com.jasonhong.fx.main.page.Page;
-import com.jasonhong.fx.main.page.components.media.MediaPlayer;
+import com.jasonhong.media.audio.handler.AudioRecorderHandler;
+import com.jasonhong.fx.main.page.CommonPage;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToolBar;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jetbrains.annotations.Nullable;
+import javafx.stage.FileChooser;
 
-import java.net.URI;
+import java.io.File;
 import java.util.Set;
 
-public class AudioRecorderPage extends StackPane implements Page {
+public class AudioRecorderPage extends CommonPage {
 
-    public static final String NAME = "录音机";
-    public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3");
+    public static final String NAME = "录音";
+    public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3","m4a","wav");
 
-    public AudioRecorderPage(){
-        super();
-        //开始录音，停止录音
-        //自动停止时间（秒）
-        //保存录音
-        //我的录音列表
-        //展示之前的录音
-        //录音保存格式MP3，M4A,WAV
-        //录音转格式（另存为）
-        //删除 //单选多选功能
-        DefaultEventBus.getInstance().subscribe(AudioRecordEvent.class,this::onAudioRecordEvent);
-        // reset side and transition to reuse a single modal pane between different examples
-        modalPane.displayProperty().addListener((obs, old, val) -> {
-            if (!val) {
-                modalPane.setAlignment(Pos.CENTER);
-                modalPane.usePredefinedTransitionFactories(null);
-            }
-        });
-        AudioRecorderHomePage homePage = new AudioRecorderHomePage();
-//        ListView<AudioRecorderInfo> listView = new ListView<AudioRecorderInfo>();
-//        var haeder=  createHeader();
-//        var sidebar = new ToolBar();
-//        var vb = new VBox(VGAP_10,haeder,listView);
-//
+    private AudioRecorderHandler handler;
+    private File outputFile;
 
+    private Button stopButton;
+    private Button recordButton;
+    public AudioRecorderPage() {
+        handler = new AudioRecorderHandler();
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
 
-        this.getChildren().addAll(homePage,modalPane);
+        Label statusLabel = new Label("点击开始录音");
+        vbox.getChildren().add(statusLabel);
 
+        recordButton = new Button("录音");
+        recordButton.setOnAction(e -> startRecording(statusLabel));
+        vbox.getChildren().add(recordButton);
+
+        stopButton = new Button("停止");
+        stopButton.setDisable(true);
+        stopButton.setOnAction(e -> stopRecording(statusLabel));
+        vbox.getChildren().add(stopButton);
+
+        Button chooseFileButton = new Button("保存文件");
+        chooseFileButton.setOnAction(e -> chooseOutputFile());
+        vbox.getChildren().add(chooseFileButton);
+        getChildren().add(vbox);
     }
 
-    private static class Dialog extends VBox {
-
-        public Dialog(int width, int height) {
-            super();
-
-            setSpacing(10);
-            setAlignment(Pos.CENTER);
-            setMinSize(width, height);
-            setMaxSize(width, height);
-            setStyle("-fx-background-color: -color-bg-default;");
+    private void chooseOutputFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("WAV files (*.wav)", "*.wav"));
+        outputFile = fileChooser.showSaveDialog(null);
+        if (outputFile != null) {
+            handler.setOutputFile(outputFile);
         }
     }
 
-    private final ModalPane modalPane = new ModalPane();
+    private void startRecording(Label statusLabel) {
+        if (outputFile == null) {
+            statusLabel.setText("Please choose an output file first!");
+            return;
+        }
 
-    private void onAudioRecordEvent(AudioRecordEvent audioRecordEvent) {
-//        var bottomDialog = new Dialog(-1, 150);
-//        bottomDialog.getChildren().setAll();
-        modalPane.setAlignment(Pos.BOTTOM_CENTER);
-        modalPane.usePredefinedTransitionFactories(Side.BOTTOM);
-        modalPane.show(new MediaPlayer(-1, 100,audioRecordEvent.getMediaFile()));
-//        modalPane.show();
+        if (handler.isRecording()) {
+            statusLabel.setText
+                    ("Already recording!");
+            return;
+        }
+        handler.startRecording();
+        statusLabel.setText("Recording...");
+
+        recordButton.setDisable(true);
+        stopButton.setDisable(false);
     }
 
-
-    private Node createHeader() {
-        return null;
+    private void stopRecording(Label statusLabel) {
+        handler.stopRecording();
+        statusLabel.setText("Stopped recording");
+        recordButton.setDisable(false);
+        stopButton.setDisable(true);
     }
+
 
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public Parent getView() {
-        return this;
-    }
-
-    @Override
-    public boolean canDisplaySourceCode() {
-        return false;
-    }
-
-    @Override
-    public @Nullable URI getJavadocUri() {
-        return null;
-    }
-
-    @Override
-    public @Nullable Node getSnapshotTarget() {
-        return null;
-    }
-
-    @Override
-    public void reset() {
-
     }
 }

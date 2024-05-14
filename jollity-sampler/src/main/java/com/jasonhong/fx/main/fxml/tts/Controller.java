@@ -7,7 +7,7 @@ import com.jasonhong.fx.main.util.FXUtil;
 import com.jasonhong.fx.main.util.MediaPlayerUtil;
 import com.jasonhong.fx.main.util.RecentFilesManager;
 //import com.jasonhong.media.audio.AudioTagWriter;
-import com.jasonhong.services.mq.tts.client.TextToSpeakInfo;
+import com.jasonhong.services.mq.mqtt.tts.client.TextToSpeakInfo;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

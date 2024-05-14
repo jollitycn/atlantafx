@@ -7,6 +7,7 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.NavEvent;
 import com.jasonhong.fx.main.event.NavReloadEvent;
 import com.jasonhong.fx.main.fxml.audio.musicplayer.MusicPlayerPage;
+import com.jasonhong.fx.main.fxml.audio.record.AudioPage;
 import com.jasonhong.fx.main.fxml.audio.record.AudioRecorderPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.general.ThemePage;
@@ -90,7 +91,7 @@ public class MainModel {
         );
         var audio = NavTree.Item.group("语音", new FontIcon(Material2OutlinedMZ.SPEAKER));
         audio.getChildren().setAll(
-                NAV_TREE.get(AudioRecorderPage.class)
+                NAV_TREE.get(AudioPage.class)
         );
         var other = NavTree.Item.group("其他", new FontIcon(Material2OutlinedMZ.PLACE));
         other.getChildren().setAll(
@@ -125,7 +126,7 @@ public class MainModel {
         map.put(ImageToText.class, NavTree.Item.page(ImageToText.NAME, ImageToText.class));
         map.put(MusicPlayerPage.class, NavTree.Item.page(MusicPlayerPage.NAME, MusicPlayerPage.class));
         map.put(BrowserPage.class, NavTree.Item.page(BrowserPage.NAME, BrowserPage.class));
-        map.put(AudioRecorderPage.class, NavTree.Item.page(AudioRecorderPage.NAME, AudioRecorderPage.class));
+        map.put(AudioPage.class, NavTree.Item.page(AudioPage.NAME, AudioPage.class));
 
         return map;
     }

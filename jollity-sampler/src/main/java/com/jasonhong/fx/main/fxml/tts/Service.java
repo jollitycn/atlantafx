@@ -6,7 +6,7 @@ import com.jasonhong.core.common.Status;
 import com.jasonhong.fx.main.util.FXUtil;
 import com.jasonhong.fx.main.util.MediaPlayerUtil;
 import com.jasonhong.media.audio.util.SupportedFileFormat;
-import com.jasonhong.services.mq.tts.client.TextToSpeakMqttPublisher;
+import com.jasonhong.services.mq.mqtt.tts.client.TextToSpeakMqttPublisher;
 
 import java.io.File;
 import java.nio.file.Path;
