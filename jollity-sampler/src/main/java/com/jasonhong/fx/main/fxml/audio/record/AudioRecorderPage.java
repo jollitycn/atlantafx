@@ -1,5 +1,6 @@
 package com.jasonhong.fx.main.fxml.audio.record;
 
+import com.jasonhong.fx.main.util.DialogUtil;
 import com.jasonhong.media.audio.handler.AudioRecorderHandler;
 import com.jasonhong.fx.main.page.CommonPage;
 import javafx.geometry.Insets;
@@ -11,6 +12,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.Set;
+
+import static com.jasonhong.fx.main.fxml.ocr.ImageToText.SUPPORTED_MEDIA_TYPES;
+import static com.jasonhong.fx.main.util.DialogUtil.chooseOutputFile;
 
 public class AudioRecorderPage extends CommonPage {
 
@@ -41,33 +45,30 @@ public class AudioRecorderPage extends CommonPage {
         vbox.getChildren().add(stopButton);
 
         Button chooseFileButton = new Button("保存文件");
-        chooseFileButton.setOnAction(e -> chooseOutputFile());
+        chooseFileButton.setOnAction(e -> {
+            outputFile = chooseOutputFile(DialogUtil.AUDIO, SUPPORTED_MEDIA_TYPES);
+            if (outputFile != null) {
+                handler.setOutputFile(outputFile);
+            }
+        });
         vbox.getChildren().add(chooseFileButton);
         getChildren().add(vbox);
     }
 
-    private void chooseOutputFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("WAV files (*.wav)", "*.wav"));
-        outputFile = fileChooser.showSaveDialog(null);
-        if (outputFile != null) {
-            handler.setOutputFile(outputFile);
-        }
-    }
 
     private void startRecording(Label statusLabel) {
         if (outputFile == null) {
-            statusLabel.setText("Please choose an output file first!");
+            statusLabel.setText("请选择保存的文件地址");
             return;
         }
 
         if (handler.isRecording()) {
             statusLabel.setText
-                    ("Already recording!");
+                    ("已经开始录音!");
             return;
         }
         handler.startRecording();
-        statusLabel.setText("Recording...");
+        statusLabel.setText("正在录音...");
 
         recordButton.setDisable(true);
         stopButton.setDisable(false);
@@ -75,7 +76,7 @@ public class AudioRecorderPage extends CommonPage {
 
     private void stopRecording(Label statusLabel) {
         handler.stopRecording();
-        statusLabel.setText("Stopped recording");
+        statusLabel.setText("停止录音");
         recordButton.setDisable(false);
         stopButton.setDisable(true);
     }

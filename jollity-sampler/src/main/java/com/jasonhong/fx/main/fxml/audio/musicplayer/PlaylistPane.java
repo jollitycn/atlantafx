@@ -4,6 +4,7 @@ package com.jasonhong.fx.main.fxml.audio.musicplayer;
 
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.theme.Tweaks;
+import com.jasonhong.fx.main.util.DialogUtil;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
@@ -112,7 +113,7 @@ final class PlaylistPane extends VBox {
         });
 
         addButton.setOnAction(e -> {
-            List<File> files = openAudioDailog(getScene(), SUPPORTED_MEDIA_TYPES);
+            List<File> files = openAudioDailog(getScene(), DialogUtil.AUDIO, SUPPORTED_MEDIA_TYPES);
             if (files == null) return;
 
             loadProgress.setVisible(true);

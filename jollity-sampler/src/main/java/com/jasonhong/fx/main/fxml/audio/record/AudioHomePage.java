@@ -7,6 +7,7 @@ import com.jasonhong.fx.main.page.CommonPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.components.RoundedStackPane;
 import com.jasonhong.fx.main.page.components.media.MediaPlayer;
+import com.jasonhong.fx.main.util.DialogUtil;
 import com.jasonhong.fx.main.util.RecentFilesManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -61,7 +62,7 @@ public class AudioHomePage extends CommonPage {
         btnOpenFile.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                List<File> files = openAudioDailog(getScene(),SUPPORTED_MEDIA_TYPES);
+                List<File> files = openAudioDailog(getScene(),DialogUtil.AUDIO,SUPPORTED_MEDIA_TYPES);
                 if (files == null) return;
                 openFiles(files);
             }
