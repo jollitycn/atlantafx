@@ -10,7 +10,7 @@ import com.jasonhong.fx.main.event.ThemeEvent;
 import com.jasonhong.fx.main.event.ThemeEvent.EventType;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.util.JColor;
-import com.jasonhong.fx.main.util.behave.BehaveManager;
+import com.jasonhong.fx.main.util.behave.BehaveThemeManager;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -34,7 +34,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class ThemeManager {
 
-    public static BehaveManager BEHAVE_THEME = new BehaveManager(BehaveManager.Type.THEME);
+    public static BehaveThemeManager BEHAVE_THEME = new BehaveThemeManager();
 
     static final String DUMMY_STYLESHEET = getResource("assets/styles/empty.css").toString();
     static final String[] APP_STYLESHEETS = new String[] {
@@ -51,8 +51,11 @@ public final class ThemeManager {
     private static final PseudoClass USER_CUSTOM = PseudoClass.getPseudoClass("user-custom");
     private static final EventBus EVENT_BUS = DefaultEventBus.getInstance();
 
-    public static final String DEFAULT_FONT_FAMILY_NAME = "Inter";
-    public static final int DEFAULT_FONT_SIZE = 14;
+//    public static final String DEFAULT_FONT_FAMILY_NAME = "Inter";
+public static final String DEFAULT_FONT_FAMILY_NAME = "Microsoft YaHei";
+
+//    public static final int DEFAULT_FONT_SIZE = 14;
+    public static final int DEFAULT_FONT_SIZE = 13;
     public static final int DEFAULT_ZOOM = 100;
     public static final AccentColor DEFAULT_ACCENT_COLOR = null;
     public static final List<Integer> SUPPORTED_FONT_SIZE = IntStream.range(8, 29).boxed().collect(Collectors.toList());
@@ -99,9 +102,6 @@ public final class ThemeManager {
 
         Objects.requireNonNull(themeName);
 
-        if (currentTheme != null) {
-            animateThemeChange(Duration.millis(750));
-        }
 ;
         final SamplerTheme prevPage = (SamplerTheme)
                 getRepository().getAll().stream()
@@ -130,14 +130,16 @@ return ;
         getScene().getStylesheets().setAll(theme.getAllStylesheets());
         getScene().getRoot().pseudoClassStateChanged(DARK, theme.isDarkMode());
 
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+            behave.setThemeName(theme.getName());
+            BEHAVE_THEME.save(behave);
         // remove user CSS customizations and reset accent on theme change
         resetAccentColor();
         resetCustomCSS();
 
         currentTheme = theme;
-
-        BEHAVE_THEME.addRecentFile(theme.getName());
         EVENT_BUS.publish(new ThemeEvent(EventType.THEME_CHANGE));
+
     }
 
     public String getFontFamily() {
@@ -152,6 +154,10 @@ return ;
 
         reloadCustomCSS();
         EVENT_BUS.publish(new ThemeEvent(EventType.FONT_CHANGE));
+
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+        behave.setFontId(fontFamily);
+        BEHAVE_THEME.save(behave);
     }
 
     public boolean isDefaultFontFamily() {
@@ -184,6 +190,9 @@ return ;
 
         reloadCustomCSS();
         EVENT_BUS.publish(new ThemeEvent(EventType.FONT_CHANGE));
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+        behave.setFontSize(size);
+        BEHAVE_THEME.save(behave);
     }
 
     public boolean isDefaultSize() {
@@ -203,6 +212,9 @@ return ;
 
         setFontSize((int) Math.ceil(zoom != 100 ? (DEFAULT_FONT_SIZE * zoom) / 100.0f : DEFAULT_FONT_SIZE));
         this.zoom = zoom;
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+        behave.setZoom(zoom);
+        BEHAVE_THEME.save(behave);
     }
 
     public AccentColor getAccentColor() {
@@ -222,6 +234,9 @@ return ;
         this.accentColor = color;
 
         EVENT_BUS.publish(new ThemeEvent(EventType.COLOR_CHANGE));
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+        behave.setAccentColorType(color.type());
+        BEHAVE_THEME.save(behave);
     }
 
     public void resetAccentColor() {
@@ -233,6 +248,9 @@ return ;
         }
 
         EVENT_BUS.publish(new ThemeEvent(EventType.COLOR_CHANGE));
+        BehaveThemeManager.BehaveTheme behave = BEHAVE_THEME.getRecentFile();
+        behave.setAccentColorType(AccentColor.Type.noset);
+        BEHAVE_THEME.save(behave);
     }
 
     public void setNamedColors(Map<String, Color> colors) {

@@ -198,10 +198,10 @@ public abstract class OutlinePage extends StackPane implements Page {
 
     public record Heading(String title, Node anchor) {
 
-        private static final Heading TOP = new Heading("Top", new Text());
+        private static final Heading TOP = new Heading("返回顶端", new Text());
 
         public Heading {
-            Objects.requireNonNull(title, "title");
+            Objects.requireNonNull(title, "标题");
             Objects.requireNonNull(anchor, "anchor");
         }
     }

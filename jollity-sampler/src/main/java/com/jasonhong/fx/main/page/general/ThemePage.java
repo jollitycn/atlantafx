@@ -37,7 +37,7 @@ import static com.jasonhong.fx.main.theme.ThemeManager.DEFAULT_FONT_SIZE;
 @SuppressWarnings("UnnecessaryLambda")
 public final class ThemePage extends OutlinePage {
 
-    public static final String NAME = "Theme";
+    public static final String NAME = "主题";
 
     private static final ThemeManager TM = ThemeManager.getInstance();
     private static final String DEFAULT_FONT_ID = "Default";
@@ -65,7 +65,7 @@ public final class ThemePage extends OutlinePage {
     private final ReadOnlyObjectWrapper<Color> bgBaseColor = new ReadOnlyObjectWrapper<>(Color.WHITE);
     private final Lazy<ThemeRepoManagerDialog> themeRepoManagerDialog;
     private final Lazy<ContrastCheckerDialog> contrastCheckerDialog;
-    private final Lazy<SceneBuilderDialog> sceneBuilderDialog;
+//    private final Lazy<SceneBuilderDialog> sceneBuilderDialog;
     private final ColorPalette colorPalette;
     private final ColorScale colorScale = new ColorScale(bgBaseColor);
     private final ChoiceBox<SamplerTheme> themeSelector = createThemeSelector();
@@ -87,12 +87,12 @@ public final class ThemePage extends OutlinePage {
             return dialog;
         });
 
-        sceneBuilderDialog = new Lazy<>(() -> {
-            var dialog = new SceneBuilderDialog();
-            dialog.setClearOnClose(true);
-            dialog.setOnClose(e -> dialog.reset());
-            return dialog;
-        });
+//        sceneBuilderDialog = new Lazy<>(() -> {
+//            var dialog = new SceneBuilderDialog();
+//            dialog.setClearOnClose(true);
+//            dialog.setOnClose(e -> dialog.reset());
+//            return dialog;
+//        });
 
         colorPalette = new ColorPalette(colorBlock -> {
             ContrastCheckerDialog dialog = contrastCheckerDialog.get();
@@ -129,9 +129,9 @@ public final class ThemePage extends OutlinePage {
 
         addPageHeader();
         addNode(createThemeManagementSection());
-        addSection("Scene Builder", createSceneBuilderSection());
-        addSection("Color Palette", createColorPaletteSection());
-        addSection("Color Scale", createColorScaleSection());
+//        addSection("Scene Builder", createSceneBuilderSection());
+        addSection("调色板", createColorPaletteSection());
+        addSection("色阶", createColorScaleSection());
 
         //Platform.runLater(this::selectCurrentTheme);
     }
@@ -146,7 +146,7 @@ public final class ThemePage extends OutlinePage {
     private Node createThemeManagementSection() {
         var themeRepoBtn = new Button(null, new FontIcon(Material2OutlinedMZ.SETTINGS));
         themeRepoBtn.getStyleClass().addAll(Styles.BUTTON_ICON, Styles.FLAT);
-        themeRepoBtn.setTooltip(new Tooltip("Settings"));
+        themeRepoBtn.setTooltip(new Tooltip("设置"));
         themeRepoBtn.setOnAction(e -> {
             ThemeRepoManagerDialog dialog = themeRepoManagerDialog.get();
             dialog.getContent().update();
@@ -160,46 +160,43 @@ public final class ThemePage extends OutlinePage {
         var grid = new GridPane();
         grid.setHgap(HGAP_20);
         grid.setVgap(VGAP_10);
-        grid.addRow(0, new Label("Color theme"), themeSelector, themeRepoBtn);
-        grid.addRow(1, new Label("Accent color"), accentSelector);
-        grid.addRow(2, new Label("Font"), new HBox(10, fontFamilyChooser, fontSizeSpinner));
+        grid.addRow(0, new Label("颜色主题"), themeSelector, themeRepoBtn);
+        grid.addRow(1, new Label("强调色"), accentSelector);
+        grid.addRow(2, new Label("字体"), new HBox(10, fontFamilyChooser, fontSizeSpinner));
 
         return grid;
     }
 
-    private Node createSceneBuilderSection() {
-        var sceneBuilderBtn = new Button("SceneBuilder Integration");
-        sceneBuilderBtn.setGraphic(new ImageView(SCENE_BUILDER_ICON));
-        sceneBuilderBtn.setOnAction(e -> {
-            SceneBuilderDialog dialog = sceneBuilderDialog.get();
-            dialog.show(getScene());
-        });
-
-        var description = BBCodeParser.createFormattedText("""
-            While SceneBuilder does not support adding custom themes, it is \
-            possible to overwrite looked-up CSS paths to make the existing \
-            SceneBuilder menu options load custom CSS files."""
-        );
-
-        return new VBox(VGAP_20, description, sceneBuilderBtn);
-    }
+//    private Node createSceneBuilderSection() {
+//        var sceneBuilderBtn = new Button("SceneBuilder Integration");
+//        sceneBuilderBtn.setGraphic(new ImageView(SCENE_BUILDER_ICON));
+//        sceneBuilderBtn.setOnAction(e -> {
+//            SceneBuilderDialog dialog = sceneBuilderDialog.get();
+//            dialog.show(getScene());
+//        });
+//
+//        var description = BBCodeParser.createFormattedText("""
+//            While SceneBuilder does not support adding custom themes, it is \
+//            possible to overwrite looked-up CSS paths to make the existing \
+//            SceneBuilder menu options load custom CSS files."""
+//        );
+//
+//        return new VBox(VGAP_20, description, sceneBuilderBtn);
+//    }
 
     private Node createColorPaletteSection() {
         var description = createFormattedText("""
-            AtlantaFX follows [url=https://primer.style/design/foundations/color]GitHub \
-            Primer interface guidelines[/url] and color system.
-                        
-            Color contrast between text and its background must meet \
-            [url=https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html]required WCAG standards[/url]:
-                        
-            [ul]
-            [li]4.5:1 for normal text[/li]
-            [li]3:1 for large text (>24px)[/li]
-            [li]3:1 for UI elements and graphics[/li]
-            [li]no contrast requirement for decorative and disabled elements[/li][/ul]
-                        
-            Click on any color block to observe and modify color combination via built-in contrast checker.
-            """, true
+                 遵循 [url=https://primer.style/design/foundations/color]GitHub Primer 界面设计规范[/url] 和颜色系统。
+                           
+                文本与其背景之间的颜色对比度必须满足 [url=https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html]所需的WCAG标准[/url]：
+                           
+                [ul]
+                [li]正常文本为 4.5:1[/li]
+                [li]大号文本（>24px）为 3:1[/li]
+                [li]UI元素和图形为 3:1[/li]
+                [li]装饰性和禁用元素无对比度要求[/li][/ul]
+                           
+                点击任意颜色块，通过内置对比度检查器观察并修改颜色组合。 """, true
         );
 
         return new VBox(VGAP_10, description, colorPalette);
@@ -207,9 +204,7 @@ public final class ThemePage extends OutlinePage {
 
     private Node createColorScaleSection() {
         var description = createFormattedText("""
-            Avoid referencing scale variables directly when building UI that needs \
-            to adapt to different color themes. Instead, use the functional variables \
-            listed above.""", false
+            在构建需要适应不同颜色主题的UI时，应避免直接引用比例变量。相反，应该使用上面列出的功能变量。""", false
         );
 
         return new VBox(VGAP_10, description, colorScale);

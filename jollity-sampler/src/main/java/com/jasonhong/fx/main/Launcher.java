@@ -7,9 +7,10 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.HotkeyEvent;
 import com.jasonhong.fx.main.event.Listener;
 import com.jasonhong.fx.main.layout.ApplicationWindow;
+import com.jasonhong.fx.main.theme.AccentColor;
 import com.jasonhong.fx.main.theme.SamplerTheme;
 import com.jasonhong.fx.main.theme.ThemeManager;
-import com.jasonhong.fx.main.util.behave.BehaveManager;
+import com.jasonhong.fx.main.util.behave.BehaveThemeManager;
 import fr.brouillard.oss.cssfx.CSSFX;
 import fr.brouillard.oss.cssfx.api.URIToPathConverter;
 import fr.brouillard.oss.cssfx.impl.log.CSSFXLogger;
@@ -71,12 +72,23 @@ public class Launcher extends Application {
 
         var tm = ThemeManager.getInstance();
         tm.setScene(scene);
-        List<String>  themes =  BEHAVE_THEME.getRecentFiles();
-        if(themes!=null && themes.size()>0){
-            tm.setTheme(themes.get(0));
-        }else {
-            tm.setTheme(tm.getDefaultTheme());
-        }
+        BehaveThemeManager.BehaveTheme themes =  BEHAVE_THEME.getRecentFile();
+            if(themes.getThemeName()==null) {
+                tm.setTheme(tm.getDefaultTheme());
+            }else {
+//            tm.De
+//            tm.DEFAULT_ACCENT_COLOR =
+                try {
+                    tm.setTheme(themes.getThemeName());
+                    tm.setAccentColor(AccentColor.getAccentColorByType(themes.getAccentColorType()));
+                    tm.setFontSize(themes.getFontSize());
+                    tm.setZoom(themes.getZoom());
+                    tm.setFontFamily(themes.getFontId());
+                } catch (Exception ex) {
+//                tm.setTheme(tm.getDefaultTheme());
+                }
+            }
+
         if (IS_DEV_MODE) {
             startCssFX(scene);
         }

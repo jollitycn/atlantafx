@@ -6,8 +6,6 @@ import com.jasonhong.fx.main.layout.ModalDialog;
 import com.jasonhong.fx.main.layout.ThemeThumbnail;
 import com.jasonhong.fx.main.theme.SamplerTheme;
 import com.jasonhong.fx.main.theme.ThemeManager;
-import com.jasonhong.fx.main.util.RecentFilesManager;
-import com.jasonhong.fx.main.util.behave.BehaveManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleGroup;
