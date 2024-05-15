@@ -110,8 +110,9 @@ public class RecentFilesManager {
                 System.out.println("write config:" + PREF_KEY_PREFIX  + " with "+ prefs.get(PREF_KEY_PREFIX + i, ""));
                 writer.write(prefs.get(PREF_KEY_PREFIX + i, ""));writer.newLine();
             }
-            fileWriter.close();
-            writer.close();
+            try {
+                writer.close();
+            }catch (Exception ex){ex.printStackTrace();}
         } catch (IOException e) {
             // 处理文件保存错误
             e.printStackTrace();

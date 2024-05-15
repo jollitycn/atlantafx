@@ -43,7 +43,7 @@ public final class BlueprintsPage extends ScrollPane implements Page {
                     getClass().getResource("index.fxml")
             );
             VBox fxmlContent = loader.load();
-            loadTask(fxmlContent);
+//            loadTask(fxmlContent);
             ((Pane) fxmlContent).setMaxWidth(Page.MAX_WIDTH);
             VBox.setVgrow(fxmlContent, Priority.ALWAYS);
             wrapper.getChildren().setAll(fxmlContent);
