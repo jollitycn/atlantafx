@@ -13,12 +13,30 @@ import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
 public class FXUtil {
+    public static void openFileFolder(File selectedFile) {
+        // 指定要打开的目录路径（这里以你的用户目录为例）
+//        File directory = new File(System.getProperty("user.home"));
+
+        // 检查Desktop类是否支持文件浏览器操作
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+            try {
+                // 转换为URI
+//                URI fileURI = directory.toURI();
+
+                // 打开资源管理器并导航到该目录
+                Desktop.getDesktop().open(selectedFile.getParentFile());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
     public  static  void placeStageAtBottom(Stage stage) {
         // 获取主屏幕
         Screen screen = Screen.getPrimary();

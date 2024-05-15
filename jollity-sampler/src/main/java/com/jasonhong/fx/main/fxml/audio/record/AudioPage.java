@@ -4,19 +4,20 @@ import atlantafx.base.controls.ModalPane;
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.theme.Styles;
 import com.jasonhong.fx.main.event.DefaultEventBus;
+import com.jasonhong.fx.main.page.CommonPage;
 import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.page.components.media.MediaPlayer;
+import com.jasonhong.fx.main.page.home.HomePage;
 import com.jasonhong.fx.main.util.ToolBarUtil;
+import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import org.apache.commons.collections.FastArrayList;
 import org.jetbrains.annotations.Nullable;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.feather.Feather;
@@ -24,9 +25,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import static com.jasonhong.fx.main.util.FXUtil.iconButton;
 import static com.jasonhong.fx.main.util.ToolBarUtil.rotateToolbar;
@@ -36,6 +35,8 @@ public class AudioPage extends VBox implements Page {
     public static final String NAME = "录音机";
     public static final Set<String> SUPPORTED_MEDIA_TYPES = Set.of("mp3");
     BorderPane  bp;
+
+    private Deque<CommonPage> pages=  new ArrayDeque();
     public AudioPage(){
         super();
         //开始录音，停止录音
@@ -55,6 +56,7 @@ public class AudioPage extends VBox implements Page {
             }
         });
         AudioHomePage homePage = new AudioHomePage();
+//        pages.add(homePage);
 //        ListView<AudioRecorderInfo> listView = new ListView<AudioRecorderInfo>();
 //        var haeder=  createHeader();
 //        var sidebar = new ToolBar();
@@ -106,6 +108,10 @@ public class AudioPage extends VBox implements Page {
     }
     private Node[] createButtons(Orientation orientation) {
         var result = new ArrayList<Node>();
+        Button prePageButton= iconButton(Feather.CHEVRON_LEFT);
+        result.add(prePageButton);
+        Button homeButton= iconButton(Feather.HOME);
+        result.add(homeButton);
        Button btnOpenRecorder= iconButton(Material2AL.AUDIOTRACK);
         result.add(btnOpenRecorder);
         result.add(iconButton(Feather.FOLDER));
@@ -127,8 +133,34 @@ public class AudioPage extends VBox implements Page {
 //            result.add(new Spacer(orientation));
 //            result.add(iconButton(Feather.SETTINGS));
         }
+//        prePageButton
+        prePageButton.setOnMouseClicked(c->{
+//            pages.add(new AudioRecorderPage());
+            Platform.runLater(()->{
+            try {pages.pop();
+                    bp.setCenter(pages.pop());
+            }catch (Exception e){}  });
+        });
+        homeButton.setOnMouseClicked(c->{
+     ;
+            Platform.runLater(()-> {
+            try {
+
+                    AudioHomePage page = new AudioHomePage();
+                    bp.setCenter(page);
+                    pages.push(page);
+            }catch (Exception e){}
+
+        });   });
         btnOpenRecorder.setOnMouseClicked(c->{
-            bp.setCenter(new AudioRecorderPage());
+            Platform.runLater(()->{
+                CommonPage page = new AudioRecorderPage();
+
+//                bp.setCenter(null);
+                bp.setCenter(page);
+//                page.toFront();
+                pages.push(page);
+            });
         });
         return result.toArray(Node[]::new);
     }

@@ -90,17 +90,28 @@ public class RecentFilesManager {
             }
         }
         // 写入配置文件
+        try {
+            FileUtils.delete(new File(CONFIG_FILE));
+        } catch (IOException e) {
+//            throw new RuntimeException(e);
+        }
         saveRecentFiles();
     }
 
     // 保存最近文件列表到配置文件
     private void saveRecentFiles() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
+        //保存之前先清除配置文件
+
+        try   {
+            FileWriter fileWriter  =  new FileWriter(CONFIG_FILE);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
 //            String[] keys = prefs.keys();
             for (int i = 0; prefs.get(PREF_KEY_PREFIX + i, null) != null; i++) {
                 System.out.println("write config:" + PREF_KEY_PREFIX  + " with "+ prefs.get(PREF_KEY_PREFIX + i, ""));
                 writer.write(prefs.get(PREF_KEY_PREFIX + i, ""));writer.newLine();
             }
+            fileWriter.close();
+            writer.close();
         } catch (IOException e) {
             // 处理文件保存错误
             e.printStackTrace();
@@ -172,7 +183,10 @@ public class RecentFilesManager {
 
     // 加载最近文件列表
     private void loadRecentFiles() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(CONFIG_FILE))) {
+        try {
+
+            FileReader fileReader = new FileReader(CONFIG_FILE);
+            BufferedReader reader = new BufferedReader(fileReader);
             String line;
             while ((line = reader.readLine()) != null) {
 
@@ -182,6 +196,8 @@ public class RecentFilesManager {
                 String[] parts = line.split(",");
 
             }
+            reader.close();
+            fileReader.close();
         } catch (FileNotFoundException e) {
 //            FileUtils
              }catch (IOException e) {
@@ -191,6 +207,8 @@ public class RecentFilesManager {
 //            throw new RuntimeException(e);
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
+        }finally {
+
         }
     }
 

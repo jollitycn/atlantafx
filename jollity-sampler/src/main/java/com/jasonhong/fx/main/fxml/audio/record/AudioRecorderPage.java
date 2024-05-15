@@ -1,6 +1,8 @@
 package com.jasonhong.fx.main.fxml.audio.record;
 
+import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.util.DialogUtil;
+import com.jasonhong.fx.main.util.RecentFilesManager;
 import com.jasonhong.media.audio.handler.AudioRecorderHandler;
 import com.jasonhong.fx.main.page.CommonPage;
 import javafx.geometry.Insets;
@@ -9,12 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import org.apache.commons.collections.FastArrayList;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 import static com.jasonhong.fx.main.fxml.ocr.ImageToText.SUPPORTED_MEDIA_TYPES;
 import static com.jasonhong.fx.main.util.DialogUtil.chooseOutputFile;
+import static com.jasonhong.fx.main.util.FXUtil.openFileFolder;
+import static com.jasonhong.fx.main.util.MediaPlayerUtil.play;
 
 public class AudioRecorderPage extends CommonPage {
 
@@ -24,8 +30,11 @@ public class AudioRecorderPage extends CommonPage {
     private AudioRecorderHandler handler;
     private File outputFile;
 
+    private Button openFolderButton;
+    private Button playButton;
     private Button stopButton;
     private Button recordButton;
+
     public AudioRecorderPage() {
         handler = new AudioRecorderHandler();
         VBox vbox = new VBox(10);
@@ -52,8 +61,19 @@ public class AudioRecorderPage extends CommonPage {
             }
         });
         vbox.getChildren().add(chooseFileButton);
+
+        playButton = new Button("播放");
+        playButton.setDisable(true);
+        playButton.setOnAction(e -> play(outputFile));
+        vbox.getChildren().add(playButton);
+
+        openFolderButton = new Button("打开文件夹");
+        openFolderButton.setDisable(true);
+        openFolderButton.setOnAction(e -> openFileFolder(outputFile));
+        vbox.getChildren().add(openFolderButton);
         getChildren().add(vbox);
     }
+
 
 
     private void startRecording(Label statusLabel) {
@@ -72,6 +92,8 @@ public class AudioRecorderPage extends CommonPage {
 
         recordButton.setDisable(true);
         stopButton.setDisable(false);
+        openFolderButton.setDisable(true);
+        playButton.setDisable(true);
     }
 
     private void stopRecording(Label statusLabel) {
@@ -79,6 +101,9 @@ public class AudioRecorderPage extends CommonPage {
         statusLabel.setText("停止录音");
         recordButton.setDisable(false);
         stopButton.setDisable(true);
+        openFolderButton.setDisable(false);
+        playButton.setDisable(false);
+        new RecentFilesManager(RecentFilesManager.RecentFileType.ADUIO).addRecentFile(outputFile);
     }
 
 
