@@ -7,7 +7,9 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.HotkeyEvent;
 import com.jasonhong.fx.main.event.Listener;
 import com.jasonhong.fx.main.layout.ApplicationWindow;
+import com.jasonhong.fx.main.theme.SamplerTheme;
 import com.jasonhong.fx.main.theme.ThemeManager;
+import com.jasonhong.fx.main.util.behave.BehaveManager;
 import fr.brouillard.oss.cssfx.CSSFX;
 import fr.brouillard.oss.cssfx.api.URIToPathConverter;
 import fr.brouillard.oss.cssfx.impl.log.CSSFXLogger;
@@ -32,6 +34,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+import static com.jasonhong.fx.main.theme.ThemeManager.BEHAVE_THEME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Launcher extends Application {
@@ -49,7 +52,6 @@ public class Launcher extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
     public void start(Stage stage) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Thread.currentThread().setUncaughtExceptionHandler(new DefaultExceptionHandler(stage));
@@ -69,7 +71,12 @@ public class Launcher extends Application {
 
         var tm = ThemeManager.getInstance();
         tm.setScene(scene);
-        tm.setTheme(tm.getDefaultTheme());
+        List<String>  themes =  BEHAVE_THEME.getRecentFiles();
+        if(themes!=null && themes.size()>0){
+            tm.setTheme(themes.get(0));
+        }else {
+            tm.setTheme(tm.getDefaultTheme());
+        }
         if (IS_DEV_MODE) {
             startCssFX(scene);
         }

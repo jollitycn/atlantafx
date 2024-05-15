@@ -4,6 +4,7 @@ package com.jasonhong.fx.main.layout;
 
 import atlantafx.base.controls.ModalPane;
 import com.jasonhong.fx.main.util.NodeUtils;
+import com.jasonhong.fx.main.util.behave.BehaveManager;
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;

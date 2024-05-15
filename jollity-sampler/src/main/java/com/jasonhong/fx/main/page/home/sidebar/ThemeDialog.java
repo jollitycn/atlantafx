@@ -6,6 +6,8 @@ import com.jasonhong.fx.main.layout.ModalDialog;
 import com.jasonhong.fx.main.layout.ThemeThumbnail;
 import com.jasonhong.fx.main.theme.SamplerTheme;
 import com.jasonhong.fx.main.theme.ThemeManager;
+import com.jasonhong.fx.main.util.RecentFilesManager;
+import com.jasonhong.fx.main.util.behave.BehaveManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleGroup;
@@ -14,16 +16,17 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
-final class ThemeDialog extends ModalDialog {
 
+
+final class ThemeDialog extends ModalDialog {
     private final TilePane thumbnailsPane = new TilePane(20, 20);
     private final ToggleGroup thumbnailsGroup = new ToggleGroup();
 
     public ThemeDialog() {
         super();
 
-        setId("theme-dialog");
-        header.setTitle("Select a theme");
+        setId("主题");
+        header.setTitle("请选择一个主题");
         content.setBody(createContent());
         content.setFooter(null);
 
@@ -32,6 +35,7 @@ final class ThemeDialog extends ModalDialog {
         thumbnailsGroup.selectedToggleProperty().addListener((obs, old, val) -> {
             if (val != null && val.getUserData() instanceof SamplerTheme theme) {
                 ThemeManager.getInstance().setTheme(theme);
+
             }
         });
     }

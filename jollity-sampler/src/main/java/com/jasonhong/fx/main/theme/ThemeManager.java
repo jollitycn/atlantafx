@@ -8,7 +8,9 @@ import com.jasonhong.fx.main.event.DefaultEventBus;
 import com.jasonhong.fx.main.event.EventBus;
 import com.jasonhong.fx.main.event.ThemeEvent;
 import com.jasonhong.fx.main.event.ThemeEvent.EventType;
+import com.jasonhong.fx.main.page.Page;
 import com.jasonhong.fx.main.util.JColor;
+import com.jasonhong.fx.main.util.behave.BehaveManager;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -16,6 +18,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.css.PseudoClass;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -30,6 +33,8 @@ import static com.jasonhong.fx.main.Resources.getResource;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class ThemeManager {
+
+    public static BehaveManager BEHAVE_THEME = new BehaveManager(BehaveManager.Type.THEME);
 
     static final String DUMMY_STYLESHEET = getResource("assets/styles/empty.css").toString();
     static final String[] APP_STYLESHEETS = new String[] {
@@ -87,6 +92,29 @@ public final class ThemeManager {
     public SamplerTheme getDefaultTheme() {
         return getRepository().getAll().get(0);
     }
+    /**
+     * See {@link SamplerTheme}.
+     */
+    public void setTheme(String themeName) {
+
+        Objects.requireNonNull(themeName);
+
+        if (currentTheme != null) {
+            animateThemeChange(Duration.millis(750));
+        }
+;
+        final SamplerTheme prevPage = (SamplerTheme)
+                getRepository().getAll().stream()
+                .filter(c -> c.getName().equals(themeName) )
+                .findFirst()
+                .orElse(null);
+
+        if(prevPage==null){
+return ;
+        }
+        SamplerTheme theme = prevPage;
+        setTheme(theme);
+    }
 
     /**
      * See {@link SamplerTheme}.
@@ -107,6 +135,8 @@ public final class ThemeManager {
         resetCustomCSS();
 
         currentTheme = theme;
+
+        BEHAVE_THEME.addRecentFile(theme.getName());
         EVENT_BUS.publish(new ThemeEvent(EventType.THEME_CHANGE));
     }
 
